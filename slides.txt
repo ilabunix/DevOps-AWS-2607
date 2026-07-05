@@ -1,0 +1,182 @@
+OpsIQ
+AI SRE Dashboard
+
+Real-time AWS infrastructure intelligence · Powered by Amazon Bedrock
+
+EMAXLabs · OpsIQ POC
+Built on AWS
+
+
+---
+BACKGROUND & MOTIVATION
+The Problem
+
+45+ Minutes
+Average time to understand a production incident 
+before engineers can even begin to fix it
+
+Alert Fatigue
+CloudWatch fires hundreds of alarms — teams 
+can't tell which ones actually matter
+
+Console Sprawl
+Multi-account AWS estates require jumping between 
+consoles, services, and tools for every incident
+
+$5,600 average cost per minute of unplanned AWS downtime — Gartner
+
+---
+INTRODUCTION
+What is OpsIQ?
+
+OpsIQ is an AI-powered SRE Dashboard that monitors your entire AWS 
+infrastructure in real time, detects anomalies before they become outages, 
+and gives your engineers instant AI-driven root cause analysis and 
+remediation steps.
+
+01  See Everything
+    Real-time health scores across all AWS accounts on one screen
+
+02  Understand Instantly
+    AI root cause analysis in seconds — not hours of log archaeology
+
+03  Act with Confidence
+    CLI commands, investigation steps, and runbook links on demand
+
+A single pane of glass for your AWS estate — the AI intelligence layer 
+above your existing monitoring.
+
+----
+GOALS OF THE INITIATIVE
+Why We Built This
+
+1  Centralise visibility
+   Give CloudOps teams a single screen covering all AWS accounts — no more 
+   jumping between consoles or piecing together alerts from multiple tools.
+
+2  Reduce mean time to understand (MTTU)
+   Cut the time between 'alert fired' and 'we know what's wrong' from 45+ 
+   minutes to under 2 minutes using AI-generated root cause analysis.
+
+3  Put AI in the operator's hands — on demand
+   Make Amazon Bedrock AI available to every on-call engineer as a tool they 
+   control, not an automated system that runs loose and generates surprise costs.
+
+4  Validate the architecture for production
+   Prove the end-to-end pipeline — signal ingestion, anomaly detection, incident 
+   correlation, AI summarisation — works reliably before connecting real account data.
+
+
+----
+ARCHITECTURE
+How It Works
+
+Signal Ingestion          Anomaly Detection         Incident Correlation      AI Analysis              Live Dashboard
+Log events                Bloom filter              Signal clustering         Bedrock on-demand        WebSocket
+via Kinesis               Z-score analysis          15-min window             only when asked          real-time updates
+
+→                         →                         →                         →
+
+✦ Key principle: Bedrock AI is called only when a human clicks a button. 
+  Zero automatic calls. Zero surprise costs.
+
+AWS Services: Kinesis · Lambda · DynamoDB · Bedrock · CloudFront
+
+----
+KEY CAPABILITIES
+What You'll See in the Demo
+
+1  Fleet Health Dashboard                              [Zero Bedrock]
+   13 accounts monitored simultaneously. Health score 0–100 per account, 
+   trend arrows showing direction, avg fleet health, and real-time alert 
+   banner for critical accounts.
+
+2  AI Incident Analysis                    [1 Bedrock call · cached forever]
+   Click any HIGH severity incident → Generate Summary → Amazon Bedrock 
+   returns root cause, investigation steps, CLI commands, confidence level, 
+   and resolution estimate in seconds.
+
+3  AI SRE Agent — Chat                        [1 Bedrock call per message]
+   Dedicated investigation workspace. Ask anything about your fleet in plain 
+   English. Mode tabs: Investigate, Summarize, Runbook, Query Logs. 
+   CLI commands copy with one click.
+
+4  Infrastructure Topology                             [Zero Bedrock]
+   Dependency graph per account — swim lanes showing Ingress → Compute → 
+   Data → Storage. AWS service icons, hover tooltips, zoom and pan. 
+   Built from live topology data.
+
+----
+IMPACT
+Impact & Time Savings
+
+< 2 min                  45+ min                  13                       ~$50
+Time to understand       Current industry          AWS accounts             Estimated monthly
+an incident              average (before OpsIQ)    monitored simultaneously  platform cost
+
+Before OpsIQ                              →         With OpsIQ
+
+Alert fires in CloudWatch                           ✓ Anomaly detected via Bloom filter — instant
+Engineer searches multiple consoles                 ✓ All accounts visible on one screen
+45 min to identify root cause                       ✓ AI root cause in < 2 minutes
+Copy CLI commands from wiki/Slack                   ✓ CLI commands in the dashboard — one click copy
+Post-incident: reconstruct timeline manually        ✓ Incident timeline view — events already logged
+
+---
+ROADMAP
+What's Next — POC to Production
+
+POC  NOW
+› 13 simulated accounts (3 critical, 7 healthy, 3 warning)
+› Full signal pipeline: Kinesis → Bloom filter → Correlator
+› AI root cause analysis (on-demand, Bedrock Haiku)
+› AI SRE Chat with mode tabs and evidence rail
+› Incident timeline + topology graph with AWS icons
+› Predictive health score trend arrows
+
+Phase 2  4–6 WEEKS
+› Child account agent CloudFormation template
+› Cross-account IAM role automation
+› Real CloudWatch log subscription ingestion
+› Slack / Teams incident notification routing
+› Runbook execution tracker with audit trail
+
+Phase 3  8–12 WEEKS
+› 100+ account support with Kinesis shard scaling
+› Multi-region deployment (us-east-1 + us-west-2)
+› Role-based access control (RBAC) per account team
+› Export incident reports to PDF
+› Cross-account blast radius dependency mapping
+
+---
+SUMMARY
+Key Takeaways
+
+🔭  Single pane of glass
+    One dashboard covers all AWS accounts — health scores, incidents, 
+    anomalies, topology, and AI analysis in one screen.
+
+⚡  From 45 minutes to 2 minutes
+    AI-generated root cause analysis replaces manual log archaeology. 
+    Engineers act faster with more confidence.
+
+🔒  Your data stays in your account
+    Built entirely on AWS-native services. Bedrock runs in your account. 
+    Nothing leaves your environment.
+
+💰  Under $50/month to run
+    Serverless architecture with pay-per-use pricing. AI is on-demand only 
+    — triggered by humans, never automated.
+
+"The only thing missing is your real account data — 
+ and that's a CloudFormation deployment away."
+
+---
+Questions
+
+OpsIQ · AI SRE Dashboard
+
+Platform cost:        ~$50/month
+Bedrock calls:        On-demand only
+Accounts monitored:   13 (POC)
+Incident TTL:         7 days auto-purged
