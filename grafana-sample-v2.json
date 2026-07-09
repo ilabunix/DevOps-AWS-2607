@@ -1,0 +1,1878 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "id": 1,
+      "type": "row",
+      "title": "Overview",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "panels": []
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Total Jobs",
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 0,
+        "y": 1
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @message\n| parse @message '\"message\":\"*\"' as parsed_message\n| filter parsed_message like /Starting job|Initializing job|Job completed|completed|COMPLETED|FAILED|STOPPED/\n| filter parsed_message like /${job_name:regex}/\n| stats count() as value",
+          "id": "",
+          "statsGroups": []
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "auto",
+        "textMode": "auto",
+        "wideLayout": true,
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 5
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Completed",
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 3,
+        "y": 1
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @message\n| parse @message '\"message\":\"*\"' as parsed_message\n| filter parsed_message like /COMPLETED|completed|Job completed/\n| filter parsed_message like /${job_name:regex}/\n| stats count() as value",
+          "id": "",
+          "statsGroups": []
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "auto",
+        "textMode": "auto",
+        "wideLayout": true,
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 5
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Failed",
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 6,
+        "y": 1
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @message\n| parse @message '\"message\":\"*\"' as parsed_message\n| filter parsed_message like /FAILED|failed|fatal error|Encountered fatal error|Exception thrown/\n| filter parsed_message like /${job_name:regex}/\n| stats count() as value",
+          "id": "",
+          "statsGroups": []
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "auto",
+        "textMode": "auto",
+        "wideLayout": true,
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 5
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "Running / Started",
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 9,
+        "y": 1
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @message\n| parse @message '\"message\":\"*\"' as parsed_message\n| filter parsed_message like /Starting job|Initializing job|this is main job execution/\n| filter parsed_message like /${job_name:regex}/\n| stats count() as value",
+          "id": "",
+          "statsGroups": []
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "auto",
+        "textMode": "auto",
+        "wideLayout": true,
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 5
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 6,
+      "type": "stat",
+      "title": "Record Mismatches",
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 12,
+        "y": 1
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @message\n| parse @message '\"message\":\"*\"' as parsed_message\n| filter parsed_message like /record count mismatch|RecordCountMismatch|Expected.*Actual/\n| filter parsed_message like /${job_name:regex}/\n| stats count() as value",
+          "id": "",
+          "statsGroups": []
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "auto",
+        "textMode": "auto",
+        "wideLayout": true,
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 5
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 7,
+      "type": "stat",
+      "title": "Volume Threshold",
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 15,
+        "y": 1
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @message\n| parse @message '\"message\":\"*\"' as parsed_message\n| filter parsed_message like /exceeds the change limit|VolumeTracking|volume.*threshold/\n| filter parsed_message like /${job_name:regex}/\n| stats count() as value",
+          "id": "",
+          "statsGroups": []
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "auto",
+        "textMode": "auto",
+        "wideLayout": true,
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 5
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 8,
+      "type": "stat",
+      "title": "Skip / Unknown Org",
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 18,
+        "y": 1
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @message\n| parse @message '\"message\":\"*\"' as parsed_message\n| filter parsed_message like /Skip limit|CHANGED='S'|Unknown Organization|unknown organization/\n| filter parsed_message like /${job_name:regex}/\n| stats count() as value",
+          "id": "",
+          "statsGroups": []
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "auto",
+        "textMode": "auto",
+        "wideLayout": true,
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 5
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 9,
+      "type": "stat",
+      "title": "DLQ Messages",
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 1
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Metrics",
+          "region": "$region",
+          "namespace": "AWS/SQS",
+          "metricName": "ApproximateNumberOfMessagesVisible",
+          "dimensions": {
+            "QueueName": "$dlq_queue"
+          },
+          "statistics": [
+            "Average"
+          ],
+          "period": "60",
+          "matchExact": true,
+          "metricQueryType": 0,
+          "expression": "",
+          "id": ""
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 5
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 10,
+      "type": "row",
+      "title": "Job Timeline",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "panels": []
+    },
+    {
+      "id": 11,
+      "type": "state-timeline",
+      "title": "Job Execution Timeline Events",
+      "gridPos": {
+        "h": 8,
+        "w": 16,
+        "x": 0,
+        "y": 6
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @message\n| parse @message '\"log_level\":\"*\"' as log_level\n| parse @message '\"message\":\"*\"' as msg\n| filter msg like /${job_name:regex}/\n| filter msg like /Initializing job|Starting job|main job execution|COMPLETED|completed|FAILED|failed|STOPPED|fatal error|Exception|Volume|Skip limit|ParallelLockoutListener/\n| parse msg /(?<job>[A-Za-z0-9]+Job)/\n| display @timestamp, job, log_level, msg\n| sort @timestamp asc\n| limit 200",
+          "id": "",
+          "statsGroups": []
+        }
+      ],
+      "options": {
+        "showValue": "auto",
+        "mergeValues": true,
+        "alignValue": "left",
+        "legend": {
+          "showLegend": true,
+          "placement": "right",
+          "displayMode": "list"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "transformations": [],
+      "description": "Log-derived timeline. If state timeline renders as points, use the adjacent recent runs table for exact event order."
+    },
+    {
+      "id": 12,
+      "type": "table",
+      "title": "Recent Job Runs / Events",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 6
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @message\n| parse @message '\"log_level\":\"*\"' as log_level\n| parse @message '\"message\":\"*\"' as msg\n| filter msg like /${job_name:regex}/\n| filter msg like /Starting job|Initializing job|COMPLETED|completed|FAILED|failed|STOPPED|fatal error|Exception/\n| parse msg /(?<job>[A-Za-z0-9]+Job)/\n| display @timestamp, job, log_level, msg\n| sort @timestamp desc\n| limit 25",
+          "id": "",
+          "statsGroups": []
+        }
+      ],
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        }
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "transformations": [],
+      "description": "Recent lifecycle log events for the selected job or all jobs."
+    },
+    {
+      "id": 13,
+      "type": "row",
+      "title": "Job Performance",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "panels": []
+    },
+    {
+      "id": 14,
+      "type": "timeseries",
+      "title": "Job Executions Over Time",
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 15
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @message\n| parse @message '\"message\":\"*\"' as msg\n| filter msg like /Starting job|Initializing job|COMPLETED|completed|FAILED|failed/\n| filter msg like /${job_name:regex}/\n| stats count() by bin(5m)",
+          "id": "",
+          "statsGroups": []
+        }
+      ],
+      "options": {
+        "legend": {
+          "showLegend": true,
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 15,
+      "type": "timeseries",
+      "title": "Job Duration Avg / Max",
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 6,
+        "y": 15
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @message\n| parse @message '\"message\":\"*\"' as msg\n| filter msg like /Job completed|completed|duration|duration_ms/\n| parse msg /(?i)(?<job>[A-Za-z0-9]+Job)/\n| parse msg /duration[_ ]?ms[=: ](?<duration_ms>\\d+)/\n| filter job like /${job_name:regex}/\n| stats avg(duration_ms) as avg_duration_ms, max(duration_ms) as max_duration_ms, min(duration_ms) as min_duration_ms by bin(5m)",
+          "id": "",
+          "statsGroups": []
+        }
+      ],
+      "options": {
+        "legend": {
+          "showLegend": true,
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 16,
+      "type": "timeseries",
+      "title": "Job Success Rate Over Time",
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 12,
+        "y": 15
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @message\n| parse @message '\"message\":\"*\"' as msg\n| filter msg like /COMPLETED|completed|FAILED|failed|fatal error/\n| filter msg like /${job_name:regex}/\n| stats count(if(msg like /COMPLETED|completed/, 1, null)) as completed, count(if(msg like /FAILED|failed|fatal error/, 1, null)) as failed by bin(15m)",
+          "id": "",
+          "statsGroups": []
+        }
+      ],
+      "options": {
+        "legend": {
+          "showLegend": true,
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 17,
+      "type": "table",
+      "title": "Long Running Job Indicators",
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 18,
+        "y": 15
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @message\n| parse @message '\"log_level\":\"*\"' as log_level\n| parse @message '\"message\":\"*\"' as msg\n| filter msg like /long running|LongRunningJob|potential long running|duration|took|elapsed/\n| filter msg like /${job_name:regex}/\n| display @timestamp, log_level, msg\n| sort @timestamp desc\n| limit 25",
+          "id": "",
+          "statsGroups": []
+        }
+      ],
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 18,
+      "type": "row",
+      "title": "Errors & Logs",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 22
+      },
+      "panels": []
+    },
+    {
+      "id": 19,
+      "type": "piechart",
+      "title": "Errors by Log Level",
+      "gridPos": {
+        "h": 8,
+        "w": 5,
+        "x": 0,
+        "y": 23
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @message\n| parse @message '\"log_level\":\"*\"' as log_level\n| parse @message '\"message\":\"*\"' as msg\n| filter log_level like /ERROR|WARN|ALERT|INFO/\n| filter log_level like /${log_level:regex}/\n| filter msg like /${job_name:regex}/\n| stats count() by log_level",
+          "id": "",
+          "statsGroups": []
+        }
+      ],
+      "options": {
+        "pieType": "donut",
+        "legend": {
+          "showLegend": true,
+          "placement": "right",
+          "displayMode": "list"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 20,
+      "type": "table",
+      "title": "Top Errors by Message",
+      "gridPos": {
+        "h": 8,
+        "w": 7,
+        "x": 5,
+        "y": 23
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @message\n| parse @message '\"log_level\":\"*\"' as log_level\n| parse @message '\"message\":\"*\"' as msg\n| filter log_level like /ERROR|WARN|ALERT/\n| filter log_level like /${log_level:regex}/\n| filter msg like /${job_name:regex}/\n| stats count() as count by msg\n| sort count desc\n| limit 10",
+          "id": "",
+          "statsGroups": []
+        }
+      ],
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 21,
+      "type": "timeseries",
+      "title": "Errors Over Time",
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 23
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @message\n| parse @message '\"log_level\":\"*\"' as log_level\n| parse @message '\"message\":\"*\"' as msg\n| filter log_level like /ERROR|ALERT/\n| filter msg like /${job_name:regex}/\n| stats count() by bin(5m)",
+          "id": "",
+          "statsGroups": []
+        }
+      ],
+      "options": {
+        "legend": {
+          "showLegend": true,
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 22,
+      "type": "table",
+      "title": "Recent Error Logs",
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 23
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @message\n| parse @message '\"log_level\":\"*\"' as log_level\n| parse @message '\"message\":\"*\"' as msg\n| parse msg /(?<job>[A-Za-z0-9]+Job)/\n| filter log_level like /ERROR|WARN|ALERT/\n| filter log_level like /${log_level:regex}/\n| filter msg like /${job_name:regex}/\n| display @timestamp, log_level, job, msg\n| sort @timestamp desc\n| limit 50",
+          "id": "",
+          "statsGroups": []
+        }
+      ],
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 23,
+      "type": "row",
+      "title": "Business Data Quality",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 31
+      },
+      "panels": []
+    },
+    {
+      "id": 24,
+      "type": "table",
+      "title": "Record Count Mismatch Details",
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 32
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @message\n| parse @message '\"log_level\":\"*\"' as log_level\n| parse @message '\"message\":\"*\"' as msg\n| filter msg like /record count mismatch|RecordCountMismatch|Expected.*Actual/\n| filter msg like /${job_name:regex}/\n| display @timestamp, log_level, msg\n| sort @timestamp desc\n| limit 50",
+          "id": "",
+          "statsGroups": []
+        }
+      ],
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 25,
+      "type": "table",
+      "title": "Unknown Org / CHANGED='S' Events",
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 8,
+        "y": 32
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @message\n| parse @message '\"message\":\"*\"' as msg\n| filter msg like /Unknown Organization|unknown organization|CHANGED='S'|CHANGED=\"S\"/\n| filter msg like /${job_name:regex}/\n| display @timestamp, msg\n| sort @timestamp desc\n| limit 50",
+          "id": "",
+          "statsGroups": []
+        }
+      ],
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 26,
+      "type": "table",
+      "title": "Constraint / Data Integrity Events",
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 32
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @message\n| parse @message '\"log_level\":\"*\"' as log_level\n| parse @message '\"message\":\"*\"' as msg\n| filter msg like /ConstraintViolation|DataIntegrityViolation|constraint|duplicate|foreign key|null value/\n| filter msg like /${job_name:regex}/\n| display @timestamp, log_level, msg\n| sort @timestamp desc\n| limit 50",
+          "id": "",
+          "statsGroups": []
+        }
+      ],
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 27,
+      "type": "row",
+      "title": "Infrastructure Intake & ECS Runtime",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 39
+      },
+      "panels": []
+    },
+    {
+      "id": 28,
+      "type": "timeseries",
+      "title": "SQS Main Queue Depth",
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 0,
+        "y": 40
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Metrics",
+          "region": "$region",
+          "namespace": "AWS/SQS",
+          "metricName": "ApproximateNumberOfMessagesVisible",
+          "dimensions": {
+            "QueueName": "$sqs_queue"
+          },
+          "statistics": [
+            "Average"
+          ],
+          "period": "60",
+          "matchExact": true,
+          "metricQueryType": 0,
+          "expression": "",
+          "id": ""
+        }
+      ],
+      "options": {
+        "legend": {
+          "showLegend": true,
+          "placement": "bottom"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 29,
+      "type": "timeseries",
+      "title": "SQS Oldest Message Age",
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 8,
+        "y": 40
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Metrics",
+          "region": "$region",
+          "namespace": "AWS/SQS",
+          "metricName": "ApproximateAgeOfOldestMessage",
+          "dimensions": {
+            "QueueName": "$sqs_queue"
+          },
+          "statistics": [
+            "Average"
+          ],
+          "period": "60",
+          "matchExact": true,
+          "metricQueryType": 0,
+          "expression": "",
+          "id": ""
+        }
+      ],
+      "options": {
+        "legend": {
+          "showLegend": true,
+          "placement": "bottom"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 30,
+      "type": "timeseries",
+      "title": "SQS Sent / Received / Deleted",
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 16,
+        "y": 40
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Metrics",
+          "region": "$region",
+          "namespace": "AWS/SQS",
+          "metricName": "NumberOfMessagesSent",
+          "dimensions": {
+            "QueueName": "$sqs_queue"
+          },
+          "statistics": [
+            "Sum"
+          ],
+          "period": "60",
+          "matchExact": true,
+          "metricQueryType": 0,
+          "expression": "",
+          "id": ""
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Metrics",
+          "region": "$region",
+          "namespace": "AWS/SQS",
+          "metricName": "NumberOfMessagesReceived",
+          "dimensions": {
+            "QueueName": "$sqs_queue"
+          },
+          "statistics": [
+            "Sum"
+          ],
+          "period": "60",
+          "matchExact": true,
+          "metricQueryType": 0,
+          "expression": "",
+          "id": ""
+        },
+        {
+          "refId": "C",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Metrics",
+          "region": "$region",
+          "namespace": "AWS/SQS",
+          "metricName": "NumberOfMessagesDeleted",
+          "dimensions": {
+            "QueueName": "$sqs_queue"
+          },
+          "statistics": [
+            "Sum"
+          ],
+          "period": "60",
+          "matchExact": true,
+          "metricQueryType": 0,
+          "expression": "",
+          "id": ""
+        }
+      ],
+      "options": {
+        "legend": {
+          "showLegend": true,
+          "placement": "bottom"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 31,
+      "type": "timeseries",
+      "title": "ECS CPU Utilization",
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 0,
+        "y": 46
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Metrics",
+          "region": "$region",
+          "namespace": "AWS/ECS",
+          "metricName": "CPUUtilization",
+          "dimensions": {
+            "ClusterName": "$ecs_cluster",
+            "ServiceName": "$ecs_service"
+          },
+          "statistics": [
+            "Average"
+          ],
+          "period": "60",
+          "matchExact": true,
+          "metricQueryType": 0,
+          "expression": "",
+          "id": ""
+        }
+      ],
+      "options": {
+        "legend": {
+          "showLegend": true,
+          "placement": "bottom"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 32,
+      "type": "timeseries",
+      "title": "ECS Memory Utilization",
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 8,
+        "y": 46
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Metrics",
+          "region": "$region",
+          "namespace": "AWS/ECS",
+          "metricName": "MemoryUtilization",
+          "dimensions": {
+            "ClusterName": "$ecs_cluster",
+            "ServiceName": "$ecs_service"
+          },
+          "statistics": [
+            "Average"
+          ],
+          "period": "60",
+          "matchExact": true,
+          "metricQueryType": 0,
+          "expression": "",
+          "id": ""
+        }
+      ],
+      "options": {
+        "legend": {
+          "showLegend": true,
+          "placement": "bottom"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 33,
+      "type": "timeseries",
+      "title": "ECS Running Task Count",
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 16,
+        "y": 46
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Metrics",
+          "region": "$region",
+          "namespace": "ECS/ContainerInsights",
+          "metricName": "RunningTaskCount",
+          "dimensions": {
+            "ClusterName": "$ecs_cluster",
+            "ServiceName": "$ecs_service"
+          },
+          "statistics": [
+            "Average"
+          ],
+          "period": "60",
+          "matchExact": true,
+          "metricQueryType": 0,
+          "expression": "",
+          "id": ""
+        }
+      ],
+      "options": {
+        "legend": {
+          "showLegend": true,
+          "placement": "bottom"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 34,
+      "type": "row",
+      "title": "CloudWatch Log Explorer",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 52
+      },
+      "panels": []
+    },
+    {
+      "id": 35,
+      "type": "logs",
+      "title": "Filtered Application Logs",
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 53
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @message\n| parse @message '\"log_level\":\"*\"' as log_level\n| parse @message '\"message\":\"*\"' as msg\n| parse @message '\"log.logger\":\"*\"' as logger\n| parse @message '\"process.thread.name\":\"*\"' as thread\n| filter log_level like /${log_level:regex}/\n| filter msg like /${job_name:regex}/\n| display @timestamp, log_level, msg, logger, thread\n| sort @timestamp desc\n| limit 200",
+          "id": "",
+          "statsGroups": []
+        }
+      ],
+      "options": {
+        "showTime": true,
+        "showLabels": false,
+        "showCommonLabels": false,
+        "wrapLogMessage": true,
+        "prettifyLogMessage": false,
+        "enableLogDetails": true,
+        "dedupStrategy": "none",
+        "sortOrder": "Descending"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "transformations": []
+    },
+    {
+      "id": 36,
+      "type": "row",
+      "title": "Runbook / Investigation Cheatsheet",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 63
+      },
+      "panels": []
+    },
+    {
+      "id": 37,
+      "type": "text",
+      "title": "Operational Notes",
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 64
+      },
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "targets": [],
+      "options": {
+        "mode": "markdown",
+        "content": "### DataLite Pipeline Flow\n`S3 incoming .zip` \u2192 `SQS incoming-files` \u2192 `ECS DataAcquisition task` \u2192 `Stage` \u2192 `Process` \u2192 `Reconcile` \u2192 `Target/Master tables`\n\n### Common Investigation Flow\n1. **Job not starting:** Check S3 file, SQS queue depth/oldest age, ECS service health, and startup errors.\n2. **Record count mismatch:** Download ZIP, compare `.properties` expected counts to CSV actual counts.\n3. **Volume exceeded:** Job becomes **STOPPED**, not **FAILED**. Validate source volume, then restart from Compass UI if acceptable.\n4. **Unknown organizations:** Check `CHANGED='S'`, ABA format, and whether organization exists in Compass.\n5. **Long running job:** Check step durations, database performance, slow queries, and input volume.\n6. **DLQ > 0:** Critical. Message is stuck and job is not processing normally.\n"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "transformations": []
+    }
+  ],
+  "refresh": "5m",
+  "schemaVersion": 39,
+  "style": "dark",
+  "tags": [
+    "DataLite",
+    "Compass",
+    "CloudWatch",
+    "SPOG"
+  ],
+  "templating": {
+    "list": [
+      {
+        "name": "datasource",
+        "label": "Datasource",
+        "type": "datasource",
+        "query": "cloudwatch",
+        "refresh": 1,
+        "current": {},
+        "options": []
+      },
+      {
+        "name": "region",
+        "label": "Region",
+        "type": "custom",
+        "query": "us-gov-east-1,us-gov-west-1",
+        "current": {
+          "text": "us-gov-east-1",
+          "value": "us-gov-east-1"
+        },
+        "options": []
+      },
+      {
+        "name": "env",
+        "label": "Environment",
+        "type": "custom",
+        "query": "dev,test,uat,prod",
+        "current": {
+          "text": "uat",
+          "value": "uat"
+        },
+        "options": []
+      },
+      {
+        "name": "log_group",
+        "label": "Log Group",
+        "type": "custom",
+        "query": "/adt-frfs-compass-uat-e-ecs/applogs,/adt-frfs-compass-prod-e-ecs/applogs,adt-frfs-compass-uat-tg-dp,adt-frfs-compass-prod-tg-dp",
+        "current": {
+          "text": "/adt-frfs-compass-uat-e-ecs/applogs",
+          "value": "/adt-frfs-compass-uat-e-ecs/applogs"
+        },
+        "options": []
+      },
+      {
+        "name": "sqs_queue",
+        "label": "SQS Queue",
+        "type": "custom",
+        "query": "adt-frfs-compass-${env}-sqs-incoming-files",
+        "current": {
+          "text": "adt-frfs-compass-uat-sqs-incoming-files",
+          "value": "adt-frfs-compass-uat-sqs-incoming-files"
+        },
+        "options": []
+      },
+      {
+        "name": "dlq_queue",
+        "label": "DLQ Queue",
+        "type": "custom",
+        "query": "adt-frfs-compass-${env}-sqs-incoming-files-deadletter-queue",
+        "current": {
+          "text": "adt-frfs-compass-uat-sqs-incoming-files-deadletter-queue",
+          "value": "adt-frfs-compass-uat-sqs-incoming-files-deadletter-queue"
+        },
+        "options": []
+      },
+      {
+        "name": "ecs_cluster",
+        "label": "ECS Cluster",
+        "type": "custom",
+        "query": "adt-frfs-compass-${env}-ecs",
+        "current": {
+          "text": "adt-frfs-compass-uat-ecs",
+          "value": "adt-frfs-compass-uat-ecs"
+        },
+        "options": []
+      },
+      {
+        "name": "ecs_service",
+        "label": "ECS Service",
+        "type": "custom",
+        "query": "adt-frfs-compass-${env}-ecs",
+        "current": {
+          "text": "adt-frfs-compass-uat-ecs",
+          "value": "adt-frfs-compass-uat-ecs"
+        },
+        "options": []
+      },
+      {
+        "name": "job_name",
+        "label": "Job",
+        "type": "custom",
+        "query": "dasyRevenueStoreJob,ftaStoreJob,vpnStoreJob,fedMailStoreJob,nicBhcStoreJob,pieUserStoreJob,routerStoreJob,udyStoreJob,uimStoreJob,dnbesIntradayJob,lcdIntradayJob,ldqIntradayJob,DataAcquisitionJob",
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": false,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "options": []
+      },
+      {
+        "name": "log_level",
+        "label": "Log Level",
+        "type": "custom",
+        "query": "INFO,DEBUG,WARN,ERROR,ALERT",
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": false,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "options": []
+      }
+    ]
+  },
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "DataLite Store Jobs - Monitoring v2",
+  "uid": "datalite-store-jobs-v2",
+  "version": 1,
+  "weekStart": ""
+}
