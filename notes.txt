@@ -1,0 +1,762 @@
+# OpsIQ — Presentation & Demo Talking Script (Updated)
+*Matched to the 9-slide deck. Timings assume 30–35 minutes total.*
+*Memorise the flow, not the words. Speak naturally.*
+*Updated with responses to: Grafana objection, InfoSec/cross-account, topology question.*
+
+---
+
+## BEFORE YOU START
+
+**15 minutes before:**
+```bash
+./scripts/demo-on.sh
+aws lambda invoke \
+  --function-name opsiq-sim-anomaly-injector \
+  --payload '{"scenario":"ecs-oom","accountId":"sim-app-a"}' \
+  --region us-west-2 response.json
+```
+
+**Open in browser:** `d3i3wlti8j662k.cloudfront.net`
+
+**Check before presenting:**
+- 13 accounts showing with health scores ✓
+- At least 1 HIGH incident exists ✓
+- Signal feed has recent entries ✓
+- Chat panel responds ✓
+
+---
+
+## SLIDE 1 — TITLE (1 min)
+
+*Open on the title slide. Let people settle.*
+
+"Good [morning/afternoon]. What I'm going to show you today
+took a few weeks to build as a proof of concept — but the
+problem it solves is one every team running AWS infrastructure
+deals with every single day.
+
+The product is called OpsIQ. We also call it the AI SRE Dashboard.
+By the end of this session you'll have seen it working live, and
+I think you'll have a very clear sense of what it could mean
+for your team."
+
+*Advance to slide 2.*
+
+---
+
+## SLIDE 2 — THE PROBLEM (2 min)
+
+*Point at the three cards one at a time.*
+
+"Let me start with the problem — because I don't want to show
+you a solution before you've felt the pain.
+
+Three things happen every time there's a production incident
+in a multi-account AWS environment.
+
+First — it takes time just to understand what's wrong.
+Not to fix it. Just to understand it.
+The industry average is 45 minutes of log archaeology before
+an engineer can even form a hypothesis.
+
+Second — alert fatigue. CloudWatch fires constantly.
+Teams stop reading alerts because 90% of them are noise.
+The 10% that matter get lost.
+
+Third — console sprawl. You've got 10, 20, 50 AWS accounts.
+Each one has its own CloudWatch, its own service views,
+its own console. There's no single place to look."
+
+*Point at the stat banner.*
+
+"And while that's happening — while your engineers are
+switching tabs and scrolling logs — the meter is running.
+$5,600 per minute of unplanned downtime. That's not a
+made-up number, that's Gartner."
+
+*Pause. Let it land. Advance to slide 3.*
+
+---
+
+## SLIDE 3 — WHAT IS OPSIQ (2 min)
+
+*Read the definition card naturally — don't rush it.*
+
+"So what is OpsIQ?
+
+It's an AI-powered SRE Dashboard. It monitors your entire
+AWS infrastructure in real time, detects anomalies before
+they become outages, and gives your engineers instant
+AI-driven root cause analysis and remediation steps.
+
+Three things it does."
+
+*Point at each pillar.*
+
+"See everything — one screen, all accounts, live health scores.
+
+Understand instantly — when something breaks, you know
+why within seconds, not minutes.
+
+Act with confidence — the dashboard gives you the commands
+to run and the steps to follow. No more Slack threads
+and wiki hunting."
+
+*Point at the bottom text.*
+
+"We've been asked whether this is a single pane of glass.
+Yes — exactly that. And more specifically, it's the AI
+intelligence layer that sits above your existing monitoring.
+It doesn't replace CloudWatch or Grafana. It's the layer
+that makes them actionable.
+
+Grafana tells you the building is on fire.
+OpsIQ tells you which floor, why it started,
+and which extinguisher to use."
+
+*Advance to slide 4.*
+
+---
+
+## SLIDE 4 — GOALS (2 min)
+
+*Move through these efficiently — don't over-explain.*
+
+"Four goals drove how we built this.
+
+Centralise visibility — one screen, all accounts.
+No more console switching.
+
+Reduce MTTU — mean time to understand.
+That's the metric that matters. Not mean time to detect,
+not mean time to resolve. The bottleneck is understanding.
+We want that under 2 minutes.
+
+Third goal — and this one matters technically —
+put AI in the operator's hands, on demand.
+Not an automated system running loose.
+A tool the engineer controls. This is what keeps
+our Bedrock costs under control, which I'll show
+you in a moment.
+
+And fourth — validate the architecture before
+connecting real account data. Everything you're
+about to see is the same pipeline that would run
+in production. The only difference is the data source."
+
+*Advance to slide 5.*
+
+---
+
+## SLIDE 5 — HOW IT WORKS (4 min)
+
+*Walk left to right through the pipeline slowly.*
+
+"The architecture is entirely serverless, entirely AWS native.
+No servers to patch, no agents to install, no data
+leaving your environment.
+
+Left to right — signals come in from your AWS accounts
+via Amazon Kinesis. In the POC these are simulated.
+In production these would be your CloudWatch log subscriptions."
+
+*Point at anomaly detection.*
+
+"Those signals hit our log processor Lambda, which runs
+two detection algorithms.
+
+First — a Bloom filter. This learns what normal looks like
+for your logs. The moment it sees a pattern it has never
+seen before — it fires. Novel patterns get flagged instantly.
+
+Second — Z-score volume analysis. If your log volume
+suddenly spikes or drops significantly, that's detected too.
+A sudden drop in traffic is just as dangerous as a spike.
+
+Those anomaly signals flow into the correlator.
+The correlator groups related signals into incident clusters —
+so instead of 50 alerts, you get one incident with 50 signals."
+
+*Pause. Point at the AI Analysis step.*
+
+"This is the important one. AI analysis via Amazon Bedrock.
+Note what it says: on-demand, only when asked.
+
+This is not automatic. Nothing calls Bedrock on a schedule.
+Nothing calls Bedrock in the background. Bedrock is called
+exactly once — when an engineer clicks a button or types
+in the chat. That's how we keep costs predictable."
+
+*Point at the purple banner.*
+
+"Zero automatic calls. Zero surprise costs.
+I want that to be very clear before I show you the live demo."
+
+*--- ADD THIS BRIDGE — addresses objections before they're raised ---*
+
+"Two questions I want to answer before we go live —
+because they came up last time we showed this.
+
+First — you may already have Grafana. That's a good thing,
+not a conflict. Grafana and OpsIQ solve different problems.
+Grafana shows you what the metrics are doing.
+OpsIQ tells you what to do about it.
+They run side by side — OpsIQ doesn't replace
+anything you've already built.
+
+Second — what gets deployed in your child accounts,
+and is it safe from an InfoSec perspective?
+The answer is three resources: one IAM role,
+one subscription filter, one Kinesis Firehose.
+The role has five permissions — three read-only on your
+own logs, two write to one specific Kinesis stream.
+Data flows one direction — out of child accounts
+into the central hub. The central account never
+reaches back in. I'll cover this in more detail
+in the Q&A but I want you to know it was designed
+with that constraint in mind from day one."
+
+*Advance to slide 6.*
+
+---
+
+## SLIDE 6 — CAPABILITIES (2 min)
+
+*Use this as your menu before going live.*
+
+"Four things I'm going to show you in the live demo.
+
+Fleet health dashboard — 13 accounts, real-time scores,
+trend arrows, critical alerts. Zero Bedrock.
+
+AI incident analysis — one click, one Bedrock call,
+result cached forever. You never pay for the same
+incident twice.
+
+AI SRE Agent — the chat tab. Ask anything about your
+fleet. Mode tabs for different workflows.
+One Bedrock call per message.
+
+Infrastructure topology — dependency graphs with swim lanes
+and AWS service icons. Zero Bedrock.
+
+Two of these cost nothing to run. Two cost fractions
+of a cent each time you use them.
+
+Let me show you all four live."
+
+*Switch to the browser. Open the dashboard.*
+
+---
+
+## LIVE DEMO — FLEET HEALTH (3 min)
+
+*Open the dashboard. Let it load fully before speaking.*
+
+"This is OpsIQ running live.
+
+13 AWS accounts on one screen. Every card shows you
+the health score, number of open incidents, and
+anomaly count in the last 30 minutes.
+
+The colour tells you the story immediately —
+green you can sleep, amber someone should look,
+red someone's getting paged."
+
+*Point at the critical accounts.*
+
+"prod-integrations is at 31. prod-checkout is at 58.
+These are accounts we deliberately set up with realistic
+degradation patterns to demonstrate the platform.
+
+Notice the trend arrows on the healthy accounts —
+these show direction. An account trending downward
+gives you warning before it hits critical."
+
+*Point at the KPI tiles at the top.*
+
+"Fleet average is 80. But average is deceptive —
+it lets bad accounts hide. This is exactly why you
+need per-account visibility, not fleet-level metrics."
+
+*Point at the AI SRE Command Centre panel.*
+
+"The command centre in the middle is always watching.
+It tells you what needs attention and what action to take.
+Right now it's flagging the 3 critical accounts and
+recommending we triage the incident queue."
+
+---
+
+## LIVE DEMO — AI INCIDENT ANALYSIS (4 min)
+
+*Click Incidents in the sidebar.*
+
+"Let me click into Incidents."
+
+*The incident list loads.*
+
+"We have multiple HIGH severity incidents open.
+I'm going to click on this one — prod-integrations,
+DynamoDB throttling, 402 signals."
+
+*Click the incident row.*
+
+"The detail panel opens on the right. I can see
+the incident type, signal count, how long it's been open,
+and the blast radius — which resources are directly affected.
+
+No AI summary yet. Watch what happens when I click
+this button."
+
+*Click Generate Summary. Wait. Don't fill the silence.*
+
+"While Bedrock is working — it's pulling the top 5 anomaly
+signals, the account topology, relevant runbook content,
+compressing it into a structured prompt, and sending it
+to Claude Haiku. This is one API call."
+
+*When summary appears — read the headline out loud.*
+
+"There it is. Root cause — DynamoDB ProvisionedThroughput
+ExceededException. The webhook-events table is throttling,
+backing up the Lambda router, filling the DLQ,
+causing Stripe webhooks to fail silently.
+
+Three investigation steps. And look at this—"
+
+*Point at the CLI command block.*
+
+"A CLI command I can copy with one click. That's my
+first diagnostic check. No context switching, no googling."
+
+*Click the copy button.*
+
+"Copied. That goes straight into my terminal.
+
+And this result — it's cached in DynamoDB permanently.
+Next time anyone opens this incident, it loads instantly.
+We pay for this analysis exactly once."
+
+---
+
+## LIVE DEMO — AI SRE AGENT CHAT (4 min)
+
+*Click AI SRE Agent in the sidebar.*
+
+"Now let me show you the chat tab.
+This is the dedicated investigation workspace."
+
+*Point at the context panel on the right.*
+
+"On the right — live fleet context. Current account count,
+open incidents, critical accounts. The AI has this data
+before I even ask a question.
+
+I'm going to use one of these suggested questions."
+
+*Click "Which account needs urgent attention right now?"*
+
+"One Bedrock call."
+
+*While it loads:*
+
+"The chat handler is assembling context — last 8 open
+incidents, last 8 anomalies, topology nodes for the
+selected account, relevant runbook content.
+All of that gets compressed into a grounded prompt.
+Max 600 tokens output. Controlled costs."
+
+*When response arrives — read key parts out loud.*
+
+"It's not just giving me the lowest score.
+It's explaining why — what incident type is active,
+how many signals, what the trend is, what to investigate first.
+
+That's the difference between a metric and intelligence."
+
+*Click Runbook mode tab.*
+*Type: "Give me the first steps to investigate DynamoDB throttling"*
+
+"Let me switch to runbook mode and ask something specific."
+
+*When response loads — point at the CLI commands.*
+
+"Every CLI command in the response — one click to copy.
+That's the workflow. Understand the incident, get the commands,
+fix it. No tab switching."
+
+---
+
+## LIVE DEMO — TOPOLOGY (2 min)
+
+*Click Topology in the sidebar. Select prod-checkout.*
+
+"Last one — the topology graph."
+
+*Let it render.*
+
+"This is the infrastructure dependency graph for prod-checkout.
+
+Swim lanes — ingress at the top, compute in the middle,
+data at the bottom. Traffic flows downward.
+ALB receives, ECS processes, Aurora persists.
+
+When Aurora connection pooling exhausts, everything
+above it starts failing. This graph shows you that
+chain in 2 seconds."
+
+*Hover over a node.*
+
+"Every node shows you the exact AWS resource type on hover.
+
+Now — a question I anticipate is how does OpsIQ know
+the topology of your real applications in production.
+The answer is it reads it from sources you already have.
+If you're running AWS Config — which most organisations
+do for compliance — we query the Config Aggregator.
+It already knows every resource and relationship in
+every account. If you use Terraform, we read the state
+file from S3. Either way, topology is discovered
+automatically. No manual diagramming, no stale diagrams."
+
+*Switch back to slides. Advance to slide 7.*
+
+---
+
+## SLIDE 7 — IMPACT (2 min)
+
+*Point at the four stat callouts.*
+
+"The numbers are simple.
+
+Under 2 minutes to understand an incident.
+Versus 45 minutes today.
+
+13 accounts monitored simultaneously.
+Approximately $50 a month to run the entire platform."
+
+*Slowly read the before/after table — left column first, then right.*
+
+"Alert fires in CloudWatch.
+→ Anomaly detected via Bloom filter — instant.
+
+Engineer searches multiple consoles.
+→ All accounts visible on one screen.
+
+45 minutes to identify root cause.
+→ AI root cause in under 2 minutes.
+
+Copy CLI commands from wiki and Slack.
+→ CLI commands in the dashboard — one click.
+
+Post-incident, reconstruct the timeline manually.
+→ Incident timeline view — events are already logged."
+
+*Pause after the last row. Advance to slide 8.*
+
+---
+
+## SLIDE 8 — ROADMAP (2 min)
+
+"Everything you've just seen is the POC.
+The pipeline is the same pipeline that runs in production.
+The only thing that changes is the data source.
+
+Phase 2 — 4 to 6 weeks — is about connecting real accounts.
+A single CloudFormation template gets deployed into each
+child account. Three resources: one IAM role,
+one subscription filter, one Kinesis Firehose.
+No agents. No compute running in your accounts.
+Log events flow one direction — out of the child account
+into the central OpsIQ account — and everything you've
+seen today runs on real data.
+
+If InfoSec requires that raw log data never leaves
+the child account, we have an Option B where the
+anomaly detection runs locally inside the child account
+and only a small structured metadata record crosses
+the boundary. Not raw logs — just the anomaly event.
+
+Phase 3 is scale — 100+ accounts, multi-region,
+RBAC, compliance posture.
+
+But the foundation is proven. The architecture works.
+Today."
+
+*Advance to slide 9.*
+
+---
+
+## SLIDE 9 — SUMMARY (1 min)
+
+*Read each takeaway naturally — don't rush.*
+
+"Four things to take away from today.
+
+Single pane of glass. One screen, all accounts,
+health scores, incidents, anomalies, AI analysis.
+
+45 minutes to 2 minutes. That's the headline metric.
+That's the value.
+
+Your data stays in your account. This runs in your AWS
+environment. Bedrock runs in your account. Nothing
+leaves your environment.
+
+Under $50 a month. Serverless, pay-per-use,
+AI on-demand only — triggered by humans, never automated."
+
+*Read the closing quote slowly.*
+
+"The only thing missing is your real account data.
+And that's a CloudFormation deployment away."
+
+*Stop. Don't say anything else. Let it land. Advance to slide 10.*
+
+---
+
+## SLIDE 10 — Q&A
+
+*Stay quiet. Wait for the first question.*
+
+---
+
+## HANDLING QUESTIONS — UPDATED
+
+---
+
+### "We already have Grafana — why do we need this?"
+
+This is the most important objection. Answer it in two parts.
+
+**Part 1 — Acknowledge, don't defend:**
+> "That's a fair challenge and I want to give you a real answer.
+> If you've got centralised dashboards in Grafana and alerting
+> in place — you've solved the visibility problem. You can see
+> everything. That's the right foundation."
+
+**Part 2 — Close the gap:**
+> "But here's the question I'd ask. When an alert fires at 2am
+> and your on-call engineer opens that Grafana dashboard —
+> what happens next?
+>
+> They see a spike. They know which service. Then they open
+> CloudWatch, start querying logs, search Confluence for the
+> runbook, ping someone on Slack who's seen this before.
+> That's 30, 40, sometimes 60 minutes before they have a
+> theory about what's actually wrong.
+>
+> Grafana answers 'what is the metric doing.'
+> OpsIQ answers 'why is it doing that, what else is affected,
+> and what do I run right now to fix it.'
+>
+> Grafana is the CCTV camera.
+> OpsIQ is the analyst watching the footage who taps you
+> on the shoulder and says — camera 4, east corridor,
+> here's what happened, here's what to do."
+
+**If they push further:**
+> "The fact that you've already centralised in Grafana
+> actually makes OpsIQ easier to deploy, not harder.
+> Grafana reads your CloudWatch data. OpsIQ taps the same
+> CloudWatch logs in parallel via a subscription filter.
+> Your Grafana doesn't change. Your alerting doesn't change.
+> OpsIQ is the layer above that turns your alerts into answers."
+
+**The number that closes it:**
+> "How many production incidents did your team investigate
+> last quarter? And what was the average time from alert
+> to understanding what was wrong?
+>
+> If that number is more than 15 minutes, OpsIQ pays for
+> itself in the first incident. It costs $50 a month to run."
+
+---
+
+### "InfoSec won't allow cross-account access"
+
+**Answer — clarify the model first:**
+> "That's a reasonable concern and I want to be precise
+> about what cross-account access actually means here —
+> because it's not what most InfoSec teams are worried about.
+>
+> We're not asking for read access into child accounts from
+> the central account. It's the opposite. Child accounts
+> push data out. The central account never reaches in.
+>
+> It's the same model AWS itself uses for Security Hub,
+> GuardDuty aggregation, and CloudWatch cross-account
+> observability. It's in the AWS Well-Architected Framework."
+
+**What InfoSec actually reviews:**
+> "The child account agent is three resources.
+> An IAM role with five permissions —
+> three read-only on its own logs,
+> two write to one specific Kinesis stream
+> in the central account. That's it.
+>
+> The role cannot read from any other child account.
+> Cannot write to anything except that one stream.
+> Cannot access S3, DynamoDB, EC2, IAM, or any other service.
+> If the credential is compromised, the blast radius is
+> a single Kinesis stream — nothing else."
+
+**If they still say no — offer Option B:**
+> "If raw log data cannot leave the child account,
+> we have a second architecture where the Bloom filter
+> and Z-score detection run locally inside the child account.
+> Only the anomaly event crosses the boundary.
+> That event is a structured metadata record —
+> account ID, anomaly type, severity, timestamp.
+> About 100 bytes. No log content. No customer data. No PII.
+>
+> It's the same model as what AWS Security Hub sends
+> between accounts today."
+
+---
+
+### "How does OpsIQ know the topology of our applications?"
+
+> "Great question — and it's one of the most important ones
+> for making this useful in production rather than just a demo.
+>
+> In the POC, topology is seeded manually. In production,
+> it's discovered automatically from sources you already have.
+>
+> If you're running AWS Config — which most organisations
+> do for compliance — we query the Config Aggregator.
+> It already records every resource, every relationship,
+> every configuration change in every account.
+> ALB to ECS, ECS to RDS, Lambda to DynamoDB —
+> Config knows all of it. We just query it and render it.
+>
+> If you use Terraform, we read the state file from S3.
+> The Terraform state is the most accurate topology
+> source that exists — it's exactly what was deployed
+> and it includes the explicit dependency graph.
+>
+> If you have consistent resource tagging — tag Application=payments
+> on every resource that belongs to the payments service —
+> we query the Resource Groups Tagging API and group
+> resources by application automatically.
+>
+> In most organisations you'd use two of these together.
+> Config for discovery, Terraform state for dependency edges.
+> Topology stays current automatically — when someone adds
+> a new resource, Config records it within minutes,
+> the graph updates, and the dashboard reflects it."
+
+**What it needs from child accounts:**
+> "For AWS Config — you likely already have Config recorder
+> running for compliance. All you need is to add the child
+> account to the Config Aggregator authorisation.
+> One line of configuration, no new resources.
+>
+> For Terraform state — one S3 bucket policy change
+> allowing the OpsIQ agent role to read the state file.
+> Read-only access to one file.
+>
+> Either way — no new infrastructure in the child account
+> beyond what we've already discussed."
+
+---
+
+### "How is this different from CloudWatch?"
+
+> "CloudWatch shows you metrics. OpsIQ shows you meaning.
+> CloudWatch tells you CPU is at 94%.
+> OpsIQ tells you why it's at 94%, what else is affected,
+> and what commands to run to fix it."
+
+---
+
+### "Is the AI reliable enough for production?"
+
+> "The AI is advisory — it suggests, humans decide.
+> Every output shows the confidence level and the evidence
+> it used. A LOW confidence analysis is still faster
+> than starting from scratch.
+> The result is cached — you review it once,
+> you never pay for it twice."
+
+---
+
+### "What if Bedrock is unavailable?"
+
+> "The entire dashboard continues working —
+> health scores, incident tracking, anomaly feed, topology.
+> The Generate Summary button shows an error.
+> Everything else is unaffected.
+> Bedrock is additive, not critical path."
+
+---
+
+### "How does it scale to 100+ accounts?"
+
+> "Kinesis shards scale horizontally.
+> DynamoDB is on-demand billing.
+> Lambda scales to zero.
+> The only change at 100 accounts is adding Kinesis shards —
+> that's a config change, not a redesign."
+
+---
+
+### "Who owns the AI model?"
+
+> "You do. It runs in your AWS account,
+> via your Bedrock subscription, billed to your AWS bill.
+> Anthropic never sees your infrastructure data.
+> Everything stays inside your environment."
+
+---
+
+### "What's the data retention?"
+
+> "Incidents: 7 days, auto-purged by DynamoDB TTL.
+> Anomalies: 3 days.
+> Health scores: 15 minutes rolling.
+> AI summaries: permanent — cached forever once generated.
+> You never pay for the same analysis twice."
+
+---
+
+### "Can we use Grafana as the data source instead of connecting to CloudWatch directly?"
+
+> "Grafana is a visualisation layer — it queries CloudWatch
+> on demand for rendering panels but doesn't store logs itself.
+> Querying Grafana for log data is like asking someone
+> to read you a book they're currently reading.
+> You'd be better off going to CloudWatch directly.
+>
+> If you're loading logs into Redshift via Grafana's data pipeline,
+> then Redshift is a viable historical data source —
+> but you'd query Redshift directly, not through Grafana.
+> And for real-time anomaly detection you still need
+> a streaming source — Kinesis gives you sub-second latency,
+> Redshift queries have a minimum of several seconds.
+>
+> The simplest path is a CloudWatch subscription filter
+> feeding the central Kinesis stream directly.
+> Grafana keeps doing exactly what it does today.
+> OpsIQ runs alongside it, not through it."
+
+---
+
+## AFTER THE DEMO
+
+```bash
+./scripts/demo-off.sh
+```
+
+Disables signal generation, purges SQS queues,
+stops Bedrock-triggering processes.
+Health scores stay live. Dashboard stays accessible.
+Cost drops to near zero.
+
+---
+
+*Total runtime: ~30–35 minutes*
+*Slides: ~17 minutes*
+*Live demo: ~13 minutes*
+*Q&A buffer: 5 minutes built in*
