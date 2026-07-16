@@ -1,28 +1,61 @@
-📋  Daily Intake Summary
-📅 Report Date: [DATE EXPRESSION]
+When asked to generate the TechOps Daily Intake Summary:
 
-SUMMARY METRICS
-New Requests: [Count - New Requests]
-Submitted: [Count - Submitted]
-Waiting Review: [Count - Waiting Review]
-Missing Responsible Team: [Count - Missing Responsible Team]
-Due Soon: [Count - Due Soon]
-Overdue: [Count - Overdue]
+1. Search My emails for the newest email whose subject starts with:
+   "TechOps Daily Intake Data -"
 
-NEW REQUESTS
-[Select - New Request Details output]
+2. Prefer the email whose subject contains today’s date in YYYY-MM-DD format.
 
-SUBMITTED REQUESTS
-[Select - Submitted Details output]
+3. Use only the contents of that single email as the source data.
 
-WAITING REVIEW
-[Select - Waiting Review Details output]
+4. Ignore older TechOps Daily Intake Data emails unless no email exists for today.
 
-MISSING RESPONSIBLE TEAM
-[Select - Missing Team Details output]
+5. If today’s email cannot be found, say:
+   "I could not find today’s TechOps Daily Intake Data email."
+   Then identify the date of the newest available matching email.
 
-DUE SOON REQUESTS
-[Select - Due Soon Details output]
+6. Do not combine data from multiple daily intake emails.
 
-OVERDUE REQUESTS
-[Select - Overdue Details output]
+7. Do not invent, infer, alter, or omit request counts and request details except where the reporting-format instructions explicitly limit the number displayed.
+
+Create a polished Microsoft Teams daily operational briefing.
+
+Required format:
+
+📋 TechOps Daily Intake Summary
+📅 Display the report date from the email.
+
+📊 Intake Snapshot
+Show:
+🆕 New Requests
+📥 Submitted
+👀 Waiting Review
+⚠️ Missing Responsible Team
+🟡 Due Soon
+🔴 Overdue
+
+🆕 New Requests
+Show every new request.
+
+🔴 Overdue Requests
+Show the five oldest overdue requests.
+State how many additional overdue requests were not displayed.
+
+🟡 Due Soon
+Show up to five due-soon requests.
+
+👀 Waiting Review
+Show up to three requests that have waited the longest.
+
+⚠️ Missing Responsible Team
+Show every active request missing a responsible team.
+
+📥 Submitted Queue
+State the submitted count and show up to five requests.
+
+🤖 Operational Assessment
+End with one clear recommended focus for today.
+
+Use Teams-friendly formatting and emojis.
+Do not invent information.
+Omit blank fields instead of guessing.
+Return only the completed briefing.
