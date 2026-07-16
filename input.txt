@@ -1,6 +1,6 @@
-Generate today’s TechOps Daily Intake Summary.
+Generate today’s  Daily Intake Summary.
 
 Search My emails for the newest message whose subject starts with
-“TechOps Daily Intake Data -”.
+“ Daily Intake Data -”.
 
 Use only today’s matching email and follow the configured reporting format.
