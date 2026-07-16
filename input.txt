@@ -1,0 +1,16 @@
+Daily Intake Summary
+
+New Requests: [Count - New Requests]
+Submitted: [Count - Submitted]
+Waiting Review: [Count - Waiting Review]
+Missing Responsible Team: [Count - Missing Responsible Team]
+Due Soon: [Count - Due Soon]
+Overdue: [Count - Overdue]
+
+Instructions:
+Create a concise operational summary for the TechOps team.
+Highlight the most urgent areas first.
+Call out overdue work, due-soon work, requests waiting for review, and missing responsible teams.
+Do not invent request details.
+Use a professional Teams-ready tone.
+Keep the summary to 5-7 sentences.
