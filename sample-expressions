@@ -9,42 +9,120 @@ and(
   ),
   greaterOrEquals(
     ticks(
-      parseDateTime(
-        if(
-          equals(
-            length(
-              split(
-                coalesce(item()?['RequestedCompletionDate'],''),
-                '/'
+      if(
+        equals(
+          length(
+            split(
+              coalesce(item()?['RequestedCompletionDate'],''),
+              '/'
+            )
+          ),
+          3
+        ),
+        concat(
+          if(
+            equals(
+              length(
+                last(
+                  split(item()?['RequestedCompletionDate'],'/')
+                )
+              ),
+              2
+            ),
+            concat(
+              '20',
+              last(
+                split(item()?['RequestedCompletionDate'],'/')
               )
             ),
-            3
+            last(
+              split(item()?['RequestedCompletionDate'],'/')
+            )
           ),
-          item()?['RequestedCompletionDate'],
-          '12/31/9999'
+          '-',
+          formatNumber(
+            int(
+              first(
+                split(item()?['RequestedCompletionDate'],'/')
+              )
+            ),
+            '00'
+          ),
+          '-',
+          formatNumber(
+            int(
+              first(
+                skip(
+                  split(item()?['RequestedCompletionDate'],'/'),
+                  1
+                )
+              )
+            ),
+            '00'
+          ),
+          'T00:00:00Z'
         ),
-        'en-US'
+        '9999-12-31T00:00:00Z'
       )
     ),
     ticks(startOfDay(utcNow()))
   ),
   lessOrEquals(
     ticks(
-      parseDateTime(
-        if(
-          equals(
-            length(
-              split(
-                coalesce(item()?['RequestedCompletionDate'],''),
-                '/'
+      if(
+        equals(
+          length(
+            split(
+              coalesce(item()?['RequestedCompletionDate'],''),
+              '/'
+            )
+          ),
+          3
+        ),
+        concat(
+          if(
+            equals(
+              length(
+                last(
+                  split(item()?['RequestedCompletionDate'],'/')
+                )
+              ),
+              2
+            ),
+            concat(
+              '20',
+              last(
+                split(item()?['RequestedCompletionDate'],'/')
               )
             ),
-            3
+            last(
+              split(item()?['RequestedCompletionDate'],'/')
+            )
           ),
-          item()?['RequestedCompletionDate'],
-          '12/31/9999'
+          '-',
+          formatNumber(
+            int(
+              first(
+                split(item()?['RequestedCompletionDate'],'/')
+              )
+            ),
+            '00'
+          ),
+          '-',
+          formatNumber(
+            int(
+              first(
+                skip(
+                  split(item()?['RequestedCompletionDate'],'/'),
+                  1
+                )
+              )
+            ),
+            '00'
+          ),
+          'T00:00:00Z'
         ),
-        'en-US'
+        '9999-12-31T00:00:00Z'
       )
     ),
     ticks(addDays(startOfDay(utcNow()),3))
