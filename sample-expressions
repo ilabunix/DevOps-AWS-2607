@@ -4,10 +4,10 @@ and(
       equals(item()?['RequestStatus']?['Value'],'Completed'),
       equals(item()?['RequestStatus']?['Value'],'Cancelled'),
       equals(item()?['RequestStatus']?['Value'],'Closed'),
-      equals(item()?['RequestStatus']?['Value'],'Rejected (Not  SS)')
+      equals(item()?['RequestStatus']?['Value'],'Rejected (Not Tech Ops SS)')
     )
   ),
-  greaterOrEquals(
+  less(
     ticks(
       concat(
         if(
@@ -54,53 +54,5 @@ and(
       )
     ),
     ticks(startOfDay(utcNow()))
-  ),
-  lessOrEquals(
-    ticks(
-      concat(
-        if(
-          equals(
-            length(
-              last(
-                split(item()?['RequestedCompletionDate'],'/')
-              )
-            ),
-            2
-          ),
-          concat(
-            '20',
-            last(
-              split(item()?['RequestedCompletionDate'],'/')
-            )
-          ),
-          last(
-            split(item()?['RequestedCompletionDate'],'/')
-          )
-        ),
-        '-',
-        formatNumber(
-          int(
-            first(
-              split(item()?['RequestedCompletionDate'],'/')
-            )
-          ),
-          '00'
-        ),
-        '-',
-        formatNumber(
-          int(
-            first(
-              skip(
-                split(item()?['RequestedCompletionDate'],'/'),
-                1
-              )
-            )
-          ),
-          '00'
-        ),
-        'T00:00:00Z'
-      )
-    ),
-    ticks(addDays(startOfDay(utcNow()),3))
   )
 )
