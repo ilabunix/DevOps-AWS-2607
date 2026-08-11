@@ -1,7 +1,60 @@
-3. ServiceNow Integration Workflow — bi-directional sync + duplicate prevention + queue hygiene
-“Bi-directional sync would work like this: when OpsIQ’s correlator groups anomalies into an incident, a Lambda calls ServiceNow’s Incident API to create the record, tagging it with a correlation ID we generate. From that point, the sync runs both ways — status changes made by an engineer in ServiceNow (acknowledged, resolved, closed) get pulled back into OpsIQ via polling or ServiceNow’s outbound webhook, so our dashboard reflects the real state instead of going stale.
-For duplicate ticketing specifically: before creating a new ServiceNow incident, OpsIQ checks two things — (1) does an open incident already exist with this correlation ID (meaning we already ticketed it), and (2) does the new anomaly’s topology/CI overlap with an existing open incident’s affected CIs within a rolling time window. If either is true, we append the new anomaly to the existing incident as related evidence rather than opening a second ticket. This is the same principle as CI-based alert aggregation — group by affected component, not by raw alert text.
-For queue hygiene: incidents that get all their underlying anomalies clear (metrics return to baseline) get auto-flagged for closure review rather than sitting open, and we’d suppress re-notification on an already-open incident so the same root cause doesn’t keep re-alerting the queue. That auto-close/suppress logic isn’t built yet in the POC — the create-and-correlate path is — but it’s a defined next step, not an unknown.”
-4. Knowledge Activation (GenAI) — specifically surfacing runbooks from ServiceNow’s Knowledge Base
-“The mechanism I’d use is retrieval, not generation from memory: when OpsIQ creates an incident, before calling Bedrock, a Lambda queries ServiceNow’s Knowledge Management API for KB articles tagged against the same CI or service that’s affected — matching on the CMDB relationship, not just keyword search on the incident text. Those matched articles get passed into the Bedrock prompt as grounding context, so the model’s summary references and links actual existing runbooks rather than inventing remediation steps.
-That’s a retrieval-augmented generation (RAG) pattern: search ServiceNow KB by CI/service → pass matched articles as context → Bedrock synthesizes an incident summary that cites which runbook applies and why. It also solves the trust problem — the SRE sees where the recommendation came from, not just an AI-generated paragraph. Today OpsIQ’s Bedrock call only has the structured incident record as context, no KB retrieval yet — that KB lookup step is the concrete next build, not a re-architecture.”
+This new information materially changes the incident status because the team has now successfully reproduced the issue in the lab, which gives you much stronger evidence about the cause.
+
+The reproduced behavior appears tied to Cisco Firepower Security Intelligence / URL filtering. In the lab, once the Security Intelligence URL configuration was changed to include the native “Malicious” object in the block list, access to the FedLine Advantage path through the Firepower device stopped working. The firewall event logs then showed traffic to the affected destination being blocked. That confirms this is not just anecdotal customer behavior anymore—the team has recreated the condition internally.
+
+The Network team has also engaged Cisco/Talos. A ticket was opened and they are working to have the affected 170.209.0.0/24 subnet removed from the relevant Talos/security-intelligence list. That strongly suggests the FedLine destination range is being classified or included in a Cisco/Talos reputation/security feed in a way that causes Cisco Firepower devices using that intelligence policy to block it.
+
+I would now update your incident template like this:
+
+Incident Number: 
+
+Issue Recap:
+Approximately 20 external customers reported connectivity/login issues accessing FedLine Advantage. Initial reports showed that affected customers were primarily using Cisco Firepower/customer-managed Cisco firewalls and that several customers were able to restore connectivity by modifying their firewall or URL filtering policy.
+
+The issue has now been successfully reproduced in the internal lab. Testing confirmed that enabling the applicable Cisco Firepower Security Intelligence / URL filtering policy caused traffic to the FedLine Advantage destination to be blocked.
+
+Services / Applications Impacted:
+FedLine Advantage – external customer connectivity.
+
+Business / Customer Impact:
+Approximately 20 customers were initially reported as impacted. Some customers have restored connectivity after adjusting their Cisco firewall/security policy. Customers whose Cisco Firepower devices consume the affected Security Intelligence/Talos classification may continue to experience access issues.
+
+Current Findings:
+
+* Issue has been successfully reproduced in the lab using Cisco Firepower.
+* Cisco Firepower Security Intelligence / URL filtering was identified as the triggering condition.
+* Adding/enabling the native “Malicious” Security Intelligence object caused access to FedLine Advantage through the firewall to fail.
+* Firewall event logs confirmed traffic to the affected destination was being blocked.
+* The affected destination/subnet identified during investigation is 170.209.0.0/24.
+* Internal application, routing, and infrastructure monitoring remain healthy.
+* Evidence now points to Cisco/Talos security-intelligence classification rather than a FedLine infrastructure failure.
+* Network team has engaged Cisco/Talos and submitted a ticket requesting removal/correction of the affected subnet from the security-intelligence list.
+
+Working Root Cause:
+Cisco Firepower devices using Security Intelligence/URL filtering are blocking traffic destined for the FedLine Advantage address range because the 170.209.0.0/24 subnet appears to be included or classified within a Cisco/Talos security-intelligence block/reputation list.
+
+This classification is causing customer-managed Cisco Firepower devices with the applicable security policy enabled to deny connectivity.
+
+Mitigation / Workaround:
+Affected customers may be able to restore connectivity by adjusting their Cisco firewall/security-intelligence or URL filtering policy to allow the FedLine Advantage destination. Any customer-side workaround should follow the approved support/network guidance.
+
+Next Steps:
+
+* Cisco/Talos to investigate and correct/remove 170.209.0.0/24 from the applicable security-intelligence classification/list.
+* Network team to continue working the Cisco/Talos support case.
+* Validate connectivity after Talos publishes the correction.
+* Continue monitoring customer call volume and identify any newly impacted customers.
+* Track customers using temporary firewall policy workarounds.
+* Confirm normal access from the lab after the Talos update is received.
+* Continue monitoring internal FedLine infrastructure for any unrelated issues.
+
+Current bridge/status update
+
+Current Status:
+The issue has been reproduced internally using Cisco Firepower. Testing confirmed that the Cisco Security Intelligence/URL filtering policy can block traffic to the FedLine Advantage destination, matching the behavior reported by customers. The affected 170.209.0.0/24 subnet appears to be associated with a Cisco/Talos security-intelligence classification. The Network team is actively working with Cisco/Talos to have the classification corrected. Internal FedLine infrastructure remains healthy.
+
+Executive-level summary
+
+Root cause has been narrowed to Cisco/Talos Security Intelligence rather than FedLine infrastructure. The issue was reproduced in the lab, where enabling the relevant Cisco Firepower security policy blocked traffic to the FedLine Advantage destination. Network Engineering is working directly with Cisco/Talos to correct the classification of the affected 170.209.0.0/24 range.
+
+At this point, I would stop calling it merely a “possible customer-side Cisco firewall issue.” You now have a reproducible technical condition and a vendor escalation, so “Cisco/Talos Security Intelligence classification issue affecting customer Firepower devices” is the much stronger incident description.
