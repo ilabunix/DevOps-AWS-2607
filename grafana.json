@@ -1,7 +1,7 @@
-fields @timestamp, `log.level`, message, `error.type`, `error.message`
+fields @timestamp, @message, `log.level`
 | filter @logStream like /-tg-dp\//
-| filter @message like /easyIrdReconcileLoadJob|calcSettlementTiersJob|mergeSplitOrgsJob/
-| filter @message like /Starting job:|Initializing job|Launching job|Stopping job|Job Failure for|Encountered an error executing step|Encountered an error saving batch meta data|Exception thrown when trying to launch job|Skip limit exceeded|rollback|roll back/
-    or `log.level` in ["ALERT", "ERROR"]
+| filter @message like /easyProfileAddressLoadJob|easyProfileAddressVerifyJob|easyIasLoad|easyIrdDailyLoadJob|easyIrdReconcileLoadJob|easyCompassDataLoadJob|eaBillingCalculationJob|calcSettlementTiersJob|mergeSplitOrgsJob/
+| filter @message like /${job_name:regex}/
+| filter @message like /Found the following potential long running jobs|potential long running job|long running job/
 | sort @timestamp desc
 | limit 200
