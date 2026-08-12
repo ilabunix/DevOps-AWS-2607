@@ -1,5 +1,13 @@
-fields @timestamp, message
+fields @timestamp, @message, @logStream
 | filter @logStream like /-tg-dp\//
-| filter message like /Launching job (dasyRevenueStoreJob|ftaStoreJob|vpnStoreJob|fedMailStoreJob|nicBhcStoreJob|pieUserStoreJob|routerStoreJob|udyStoreJob|uimStoreJob)/
-| filter message like /${job_name:regex}/
+| filter @message like /(dasyRevenueStoreJob|ftaStoreJob|vpnStoreJob|fedMailStoreJob|nicBhcStoreJob|pieUserStoreJob|routerStoreJob|udyStoreJob|uimStoreJob)/
+| filter @message like /Job Failure for|Encountered fatal error executing job|Exception thrown when trying to launch job/
+| sort @timestamp desc
+| limit 100
+
+fields @timestamp, @message
+| filter @logStream like /-tg-dp\//
+| filter @message like /Job Failure for/
+| filter @message like /(dasyRevenueStoreJob|ftaStoreJob|vpnStoreJob|fedMailStoreJob|nicBhcStoreJob|pieUserStoreJob|routerStoreJob|udyStoreJob|uimStoreJob)/
+| filter @message like /${job_name:regex}/
 | stats count() as value
