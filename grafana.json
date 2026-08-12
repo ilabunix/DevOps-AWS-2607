@@ -1,7 +1,7 @@
-fields @timestamp, `log.level`, message, `error.type`, `error.message`, `log.logger`
+fields @timestamp, message
 | filter @logStream like /-tg-dp\//
-| filter @message like /easyProfileAddressLoadJob|easyProfileAddressVerifyJob|easyIasLoad|easyIrdDailyLoadJob|easyIrdReconcileLoadJob|easyCompassDataLoadJob|eaBillingCalculationJob|calcSettlementTiersJob|mergeSplitOrgsJob/
-| filter @message like /${job_name:regex}/
-| filter `log.level` in ["ALERT", "ERROR"]
-| sort @timestamp desc
-| limit 300
+| filter message like /finished with status: COMPLETED/
+| parse message "Job * finished with status: *" as job, status
+| filter job like /(dasyRevenueStoreJob|ftaStoreJob|vpnStoreJob|fedMailStoreJob|nicBhcStoreJob|pieUserStoreJob|routerStoreJob|udyStoreJob|uimStoreJob)/
+| filter job like /${job_name:regex}/
+| stats count() as value
