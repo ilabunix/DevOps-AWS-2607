@@ -1,11 +1,7 @@
-fields @timestamp, @message
+fields @timestamp, `log.level`, message, `error.type`, `error.message`
 | filter @logStream like /-tg-dp\//
 | filter @message like /easyProfileAddressLoadJob|easyProfileAddressVerifyJob|easyIasLoad|easyIrdDailyLoadJob|easyIrdReconcileLoadJob|easyCompassDataLoadJob|eaBillingCalculationJob|calcSettlementTiersJob|mergeSplitOrgsJob/
 | filter @message like /${job_name:regex}/
 | filter @message like /Encountered an error executing step|Encountered an error saving batch meta data|Exception thrown when trying to launch job|Job Failure for|failed on feed volume|Stopping job|Skip limit exceeded/
-| parse @message /"log.level":"(?<parsed_level>[^"]+)"/
-| parse @message /"message":"(?<parsed_event_message>[^"]+)"/
-| parse @message /"error.type":"(?<parsed_exception_type>[^"]+)"/
-| fields @timestamp, parsed_level, parsed_event_message, parsed_exception_type
 | sort @timestamp desc
 | limit 200
