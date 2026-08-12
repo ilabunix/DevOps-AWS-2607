@@ -1,7 +1,7 @@
-fields @timestamp, @message, `log.level`
+fields @timestamp, `log.level`, message
 | filter @logStream like /-tg-dp\//
 | filter @message like /easyProfileAddressLoadJob|easyProfileAddressVerifyJob|easyIasLoad|easyIrdDailyLoadJob|easyIrdReconcileLoadJob|easyCompassDataLoadJob|eaBillingCalculationJob|calcSettlementTiersJob|mergeSplitOrgsJob/
 | filter @message like /${job_name:regex}/
-| filter @message like /Found the following potential long running jobs|potential long running job|long running job/
+| filter @message like /Stopping job|ParallelLockoutListener|due to .* other executions|concurrent execution|optimistic lock/
 | sort @timestamp desc
-| limit 200
+| limit 100
