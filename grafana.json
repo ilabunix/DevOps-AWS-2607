@@ -1,6 +1,5 @@
 fields @timestamp, message, `process.thread.name`, log.logger
 | filter @logStream like /-tg-dp\//
-| filter message like /created-for-/
-| filter message like /(dasyRevenueStoreJob|ftaStoreJob|vpnStoreJob|fedMailStoreJob|nicBhcStoreJob|pieUserStoreJob|routerStoreJob|udyStoreJob|uimStoreJob)/
+| filter message like /Job exit status|ExitStatus|BatchStatus|COMPLETED|FAILED|STOPPED|Job Failure/
 | sort @timestamp desc
 | limit 100
