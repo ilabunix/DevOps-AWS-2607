@@ -1,7 +1,7 @@
-fields @timestamp, job_name, `log.level`, `log.logger`, `error.type`, `error.message`, message
+fields @timestamp, `log.level`, message, `error.type`, `error.message`, `log.logger`
 | filter @logStream like /-tg-dp\//
 | filter @message like /easyProfileAddressLoadJob|easyProfileAddressVerifyJob|easyIasLoad|easyIrdDailyLoadJob|easyIrdReconcileLoadJob|easyCompassDataLoadJob|eaBillingCalculationJob|calcSettlementTiersJob|mergeSplitOrgsJob/
 | filter @message like /${job_name:regex}/
-| filter `log.level` like /${log_level:raw}/
+| filter `log.level` in ["ALERT", "ERROR"]
 | sort @timestamp desc
-| limit 500
+| limit 300
