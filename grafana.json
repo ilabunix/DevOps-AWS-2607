@@ -2,9 +2,7 @@ fields @timestamp, @message, `log.level`, `error.type`, `error.message`
 | filter @logStream like /-tg-dp\//
 | filter @message like /easyProfileAddressLoadJob|easyProfileAddressVerifyJob|easyIasLoad|easyIrdDailyLoadJob|easyIrdReconcileLoadJob|easyCompassDataLoadJob|eaBillingCalculationJob|calcSettlementTiersJob|mergeSplitOrgsJob/
 | filter @message like /${job_name:regex}/
-| filter ispresent(`error.type`) or @message like /Exception/
-| parse @message /(?<message_exception>[A-Za-z0-9_.]+Exception)/
-| fields coalesce(`error.type`, message_exception) as exception_type
-| filter ispresent(exception_type)
-| stats count(*) as occurrences by exception_type
-| sort occurrences desc
+| filter @message like /Encountered an error executing step|Encountered an error saving batch meta data|Exception thrown when trying to launch job|Job Failure for|failed on feed volume|Stopping job|Skip limit exceeded/
+    or `error.type` like /SkipLimitExceededException/
+| sort @timestamp desc
+| limit 200
