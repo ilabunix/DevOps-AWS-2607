@@ -1,14 +1,5 @@
-fields @timestamp, message, `process.thread.name`, log.logger
-| filter @logStream like /-tg-dp\//
-| filter message like /(dasyRevenueStoreJob|ftaStoreJob|vpnStoreJob|fedMailStoreJob|nicBhcStoreJob|pieUserStoreJob|routerStoreJob|udyStoreJob|uimStoreJob)/
-| filter message like /finished with status|Job exit status|Job Failure for|Launching job/
-| sort @timestamp desc
-| limit 200
-
-
 fields @timestamp, message
 | filter @logStream like /-tg-dp\//
-| filter message like /Job (dasyRevenueStoreJob|ftaStoreJob|vpnStoreJob|fedMailStoreJob|nicBhcStoreJob|pieUserStoreJob|routerStoreJob|udyStoreJob|uimStoreJob) finished with status: COMPLETED/
+| filter message like /Launching job (dasyRevenueStoreJob|ftaStoreJob|vpnStoreJob|fedMailStoreJob|nicBhcStoreJob|pieUserStoreJob|routerStoreJob|udyStoreJob|uimStoreJob)/
 | filter message like /${job_name:regex}/
 | stats count() as value
-
