@@ -1,0 +1,16 @@
+Hi Team,
+
+I’m reaching out regarding the TaskTop application, which is currently being migrated from the on-prem environment to AWS.
+
+As part of the migration, the team will need to move the existing application data from the on-prem Exadata/Oracle database to PostgreSQL in AWS.
+
+I’ve been pulled into the project primarily to assist with the AWS infrastructure/IaC work, including provisioning the RDS PostgreSQL environment. The application team is also looking for guidance and support around the database migration portion of the effort.
+
+I initially reached out to Russell McIver on the NIT side, and since TaskTop is a Retail application, he recommended that I connect with the Retail TSM team to help identify the appropriate database/Oracle SME or migration team that should be engaged.
+
+Could you please help point us to the appropriate team or contacts who can assist with the Oracle/Exadata to PostgreSQL migration?
+
+Once we identify the right resources, we can set up a discussion with the TaskTop team to review the current database, migration requirements, approach, and any dependencies.
+
+Thanks,
+Irshad
