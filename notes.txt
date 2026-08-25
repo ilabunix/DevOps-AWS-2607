@@ -1,5 +1,26 @@
-Yes, with one distinction. The Terraform will provision the Aurora PostgreSQL environment, including the cluster/instances, database, networking, security, and the initial database credentials. We can have those credentials stored securely in Secrets Manager for the appropriate migration process to use.
+WITH
+cw AS (
+    SELECT
+        (SELECT COALESCE(MAX(ecs_cpu.__value__), 0)
+         FROM ecs_cpu) AS ecs_cpu,
 
-The application schema, schema owner/roles, tables, indexes, etc. would not automatically be created by the RDS Terraform module. Since we’re migrating from Oracle to PostgreSQL, we’ll first need the Oracle schema converted to PostgreSQL-compatible DDL, and then that schema can be deployed to the new database before the data migration.
+        (SELECT COALESCE(MAX(ecs_mem.__value__), 0)
+         FROM ecs_mem) AS ecs_mem
+)
 
-Once the target schema is in place and the appropriate source Oracle and target PostgreSQL credentials/connectivity are available, the migration team/tool can perform the actual data movement.
+SELECT CASE
+
+    -- RED / CRITICAL
+    WHEN MAX(cw.ecs_cpu) >= 95 THEN 2
+    WHEN MAX(cw.ecs_mem) >= 95 THEN 2
+
+    -- AMBER / MODERATE
+    WHEN MAX(cw.ecs_cpu) >= 80 THEN 1
+    WHEN MAX(cw.ecs_mem) >= 80 THEN 1
+
+    -- HEALTHY
+    ELSE 0
+
+END AS ecs_health
+
+FROM cw
