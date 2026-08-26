@@ -1,19 +1,43 @@
-cw AS (
-  SELECT
-    (SELECT COALESCE(MAX(apigw_4xx.__value__),0) FROM apigw_4xx) AS apigw_4xx,
-    (SELECT COALESCE(MAX(apigw_5xx.__value__),0) FROM apigw_5xx) AS apigw_5xx,
-    (SELECT COALESCE(MAX(apigw_latency.__value__),0) FROM apigw_latency) AS apigw_latency,
-    (SELECT COALESCE(MAX(apigw_cnt.__value__),0) FROM apigw_cnt) AS apigw_cnt,
-
-    (
-      COALESCE((SELECT MAX(apigw_hit_fla.__value__) FROM apigw_hit_fla), 0)
-      +
-      COALESCE((SELECT MAX(apigw_hit_flw.__value__) FROM apigw_hit_flw), 0)
-    ) AS apigw_h,
-
-    (
-      COALESCE((SELECT MAX(apigw_miss_fla.__value__) FROM apigw_miss_fla), 0)
-      +
-      COALESCE((SELECT MAX(apigw_miss_flw.__value__) FROM apigw_miss_flw), 0)
-    ) AS apigw_m
+WITH cw AS (
+    SELECT
+        (SELECT COALESCE(MAX(rds_cpu.__value__),0) FROM rds_cpu) AS rds_cpu,
+        (SELECT COALESCE(MIN(rds_mem.__value__),0) FROM rds_mem) AS rds_mem,
+        (SELECT COALESCE(MAX(rds_repl_lag.__value__),0) FROM rds_repl_lag) AS rds_repl_lag
 )
+
+SELECT CASE
+
+    -- RED CHECKS
+    WHEN MAX(cw.rds_cpu) > 90 THEN 2
+    WHEN MIN(cw.rds_mem) > 0
+         AND MIN(cw.rds_mem) < 536870912 THEN 2
+    WHEN MAX(cw.rds_repl_lag) > 10000 THEN 2
+
+    -- AMBER CHECKS
+    WHEN MAX(cw.rds_cpu) BETWEEN 75 AND 90 THEN 1
+    WHEN MIN(cw.rds_mem) BETWEEN 536870912 AND 1073741824 THEN 1
+    WHEN MAX(cw.rds_repl_lag) BETWEEN 5000 AND 10000 THEN 1
+
+    ELSE 0
+
+END AS rds_health
+
+FROM cw
+
+
+(SELECT COALESCE(MAX(rds_cpu.__value__),0) FROM rds_cpu) AS rds_cpu,
+(SELECT COALESCE(MIN(rds_mem.__value__),0) FROM rds_mem) AS rds_mem,
+(SELECT COALESCE(MAX(rds_repl_lag.__value__),0) FROM rds_repl_lag) AS rds_repl_lag
+
+
+
+WHEN MAX(cw.rds_cpu) > 90 THEN 2
+WHEN MIN(cw.rds_mem) > 0 AND MIN(cw.rds_mem) < 536870912 THEN 2
+WHEN MAX(cw.rds_repl_lag) > 10000 THEN 2
+
+
+WHEN MAX(cw.rds_cpu) BETWEEN 75 AND 90 THEN 1
+WHEN MIN(cw.rds_mem) BETWEEN 536870912 AND 1073741824 THEN 1
+WHEN MAX(cw.rds_repl_lag) BETWEEN 5000 AND 10000 THEN 1
+
+
