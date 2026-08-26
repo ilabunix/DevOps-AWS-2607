@@ -1,26 +1,362 @@
-WITH
-cw AS (
-    SELECT
-        (SELECT COALESCE(MAX(ecs_cpu.__value__), 0)
-         FROM ecs_cpu) AS ecs_cpu,
+Sure — here’s a clean prompt you can give to a Codex/Claude/Hermes agent so it understands exactly what the TaskTop RDS module is supposed to build.
 
-        (SELECT COALESCE(MAX(ecs_mem.__value__), 0)
-         FROM ecs_mem) AS ecs_mem
-)
+Create a reusable Terraform module for the TaskTop application database in the existing GitLab Terraform repository.
 
-SELECT CASE
+Objective
 
-    -- RED / CRITICAL
-    WHEN MAX(cw.ecs_cpu) >= 95 THEN 2
-    WHEN MAX(cw.ecs_mem) >= 95 THEN 2
+Provision a highly available Amazon Aurora PostgreSQL database for the TaskTop application in AWS GovCloud.
 
-    -- AMBER / MODERATE
-    WHEN MAX(cw.ecs_cpu) >= 80 THEN 1
-    WHEN MAX(cw.ecs_mem) >= 80 THEN 1
+The TaskTop application is being migrated from on-premises infrastructure to AWS. Its existing database is Oracle/Exadata, and the target database platform will be Aurora PostgreSQL.
 
-    -- HEALTHY
-    ELSE 0
+This Terraform module is responsible only for provisioning the AWS database infrastructure. It should not perform the Oracle-to-PostgreSQL schema conversion or data migration.
 
-END AS ecs_health
+Target Architecture
 
-FROM cw
+Create:
+
+* One Amazon Aurora PostgreSQL cluster.
+* Two Aurora PostgreSQL DB instances.
+* Instance class: db.r6g.large.
+* Memory: approximately 16 GiB per instance.
+* One instance will operate as the writer.
+* The second instance will be an Aurora Replica and failover target.
+* Instances should be distributed across two different Availability Zones.
+* Database instances must run in private subnets.
+* Database must not be publicly accessible.
+* PostgreSQL port: 5432.
+
+The intended architecture is:
+
+TaskTop Application
+        |
+        | TCP/5432
+        v
+Aurora PostgreSQL Cluster
+        |
+        +---------------------------+
+        |                           |
+   AZ / Private Subnet 1      AZ / Private Subnet 2
+        |                           |
+   db.r6g.large                db.r6g.large
+      Writer                 Aurora Replica
+        |                           |
+        +-------------+-------------+
+                      |
+              Aurora Cluster Storage
+              Multi-AZ distributed
+
+Aurora cluster storage already maintains multiple copies across Availability Zones. The second DB instance is required to provide an Aurora failover target and database compute-level HA.
+
+Terraform Module Location
+
+Create the module under:
+
+terraform/modules/rds/
+
+with:
+
+terraform/modules/rds/
+├── main.tf
+├── variables.tf
+└── outputs.tf
+
+Follow the conventions already used by the existing Terraform repository and its modules.
+
+Aurora Cluster Requirements
+
+Create an aws_rds_cluster using:
+
+Engine: aurora-postgresql
+Port: 5432
+Storage encryption: enabled
+Public access: disabled
+
+Engine version must be configurable through a Terraform variable. Do not hard-code a PostgreSQL/Aurora version unless an approved version already exists in the repository.
+
+Create configurable Aurora PostgreSQL cluster and instance parameter groups matching the selected PostgreSQL major version.
+
+Aurora Instances
+
+Use aws_rds_cluster_instance.
+
+Default configuration:
+
+Instance count: 2
+Instance class: db.r6g.large
+
+The instances should be placed in separate Availability Zones when AZs are supplied to the module.
+
+The module must support changing the instance class through a variable.
+
+Networking
+
+Create or use an RDS DB subnet group containing at least two private subnets in separate Availability Zones.
+
+The module should accept:
+
+db_subnet_ids
+availability_zones
+vpc_security_group_ids
+
+as inputs.
+
+Do not create broad ingress rules inside the RDS module.
+
+The existing repository’s security-group module should remain responsible for creating security groups.
+
+Aurora should receive the RDS security group ID as an input.
+
+The desired database access pattern is:
+
+TaskTop EC2/Application Security Group
+             |
+             | TCP 5432
+             v
+TaskTop RDS Security Group
+             |
+             v
+Aurora PostgreSQL
+
+Prefer security-group-to-security-group access instead of broad CIDR access.
+
+Do not allow:
+
+0.0.0.0/0 -> 5432
+
+Encryption
+
+Enable Aurora storage encryption.
+
+The module should accept an existing KMS key ARN or ID:
+
+kms_key_arn
+
+and use it for database encryption.
+
+Use the existing KMS infrastructure/module in the repository rather than creating an unrelated KMS key inside the RDS module.
+
+Master Credentials
+
+Do not store the PostgreSQL password in:
+
+* Terraform source code
+* terraform.tfvars
+* locals-data.tf
+* GitLab variables unless specifically required
+* Terraform outputs
+
+Use AWS-managed Secrets Manager credentials through:
+
+manage_master_user_password = true
+
+and configure:
+
+master_user_secret_kms_key_id
+
+using the supplied KMS key.
+
+The module may accept the initial master username, for example:
+
+dbadmin
+
+but the password must be generated and managed securely by AWS Secrets Manager.
+
+Expose only the Secrets Manager secret ARN as a Terraform output.
+
+Backups
+
+Enable automated Aurora backups.
+
+Make the following configurable:
+
+backup_retention_period
+preferred_backup_window
+preferred_maintenance_window
+
+Default backup retention:
+
+7 days
+
+Enable:
+
+copy_tags_to_snapshot = true
+
+For production-like environments, deletion protection should default to enabled.
+
+Support final snapshot creation when the cluster is intentionally destroyed.
+
+Monitoring
+
+Enable PostgreSQL CloudWatch log export:
+
+postgresql
+
+Support Performance Insights.
+
+Performance Insights should be configurable but enabled by default.
+
+Use the supplied KMS key for Performance Insights encryption when appropriate.
+
+Do not create unnecessary monitoring IAM roles unless Enhanced Monitoring is explicitly enabled.
+
+Tags
+
+Accept the repository’s existing shared tags through:
+
+variable "tags" {
+  type = map(string)
+}
+
+Apply the tags consistently to:
+
+* Aurora cluster
+* DB instances
+* subnet group
+* parameter groups
+* related RDS resources
+
+Merge resource-specific Name tags with the existing shared tags.
+
+Required Inputs
+
+At minimum, expose variables for:
+
+cluster_identifier
+database_name
+master_username
+engine_version
+db_parameter_group_family
+instance_class
+instance_count
+db_subnet_ids
+availability_zones
+vpc_security_group_ids
+kms_key_arn
+port
+backup_retention_period
+preferred_backup_window
+preferred_maintenance_window
+deletion_protection
+skip_final_snapshot
+auto_minor_version_upgrade
+performance_insights_enabled
+performance_insights_retention_period
+tags
+
+Use sensible defaults where appropriate.
+
+Default:
+
+instance_class = db.r6g.large
+instance_count = 2
+port = 5432
+backup_retention_period = 7
+deletion_protection = true
+performance_insights_enabled = true
+
+Add Terraform validation requiring at least:
+
+2 DB subnets
+2 Availability Zones
+2 DB instances for the TaskTop HA configuration
+
+Outputs
+
+Expose:
+
+cluster_id
+cluster_arn
+cluster_endpoint
+reader_endpoint
+database_name
+port
+master_user_secret_arn
+instance_ids
+instance_endpoints
+
+Do not output the database password.
+
+Root Module Integration
+
+After creating the reusable module, add a module invocation in the repository root main.tf.
+
+It should conceptually look like:
+
+module "tasktop_rds" {
+  source = "./modules/rds"
+  cluster_identifier = local.tasktop_rds_cluster_name
+  database_name      = local.tasktop_rds_database_name
+  master_username    = local.tasktop_rds_master_username
+  engine_version            = local.tasktop_rds_engine_version
+  db_parameter_group_family = local.tasktop_rds_parameter_group_family
+  instance_class = "db.r6g.large"
+  instance_count = 2
+  db_subnet_ids = [
+    <existing private subnet 1>,
+    <existing private subnet 2>
+  ]
+  availability_zones = [
+    <AZ 1>,
+    <AZ 2>
+  ]
+  vpc_security_group_ids = [
+    <existing TaskTop RDS security group>
+  ]
+  kms_key_arn = <existing KMS key ARN>
+  port = 5432
+  backup_retention_period = 7
+  deletion_protection = true
+  skip_final_snapshot = false
+  performance_insights_enabled = true
+  tags = local.tags
+}
+
+Do not invent existing Terraform output names. Inspect the repository and use the actual subnet, security-group, KMS, naming-prefix, environment, and tag variables/outputs already defined there.
+
+Scope Boundary
+
+The RDS Terraform module is responsible for AWS infrastructure only:
+
+Aurora PostgreSQL cluster
+Aurora DB instances
+DB subnet group
+Parameter groups
+Encryption
+Secrets Manager integration
+Backups
+Monitoring
+Endpoints
+AWS-level security configuration
+
+It is not responsible for creating or converting:
+
+Oracle schemas
+PostgreSQL application schemas
+schema owners
+application database users
+tables
+indexes
+sequences
+constraints
+stored procedures
+triggers
+Oracle PL/SQL conversion
+application data
+
+Those activities belong to the DBA/database migration/TaskTop migration workstream.
+
+The expected migration sequence is:
+
+1. Terraform provisions Aurora PostgreSQL
+                ↓
+2. Aurora infrastructure is validated
+                ↓
+3. DBA/migration team performs Oracle → PostgreSQL schema conversion
+                ↓
+4. PostgreSQL schema and required roles are created
+                ↓
+5. Data migration from Exadata/Oracle to Aurora PostgreSQL
+                ↓
+6. TaskTop application connectivity and functional validation
+
+Before making repository-wide changes, inspect the existing Terraform patterns and keep the implementation consistent with the existing TaskTop GitLab repository rather than introducing a separate Terraform design.
