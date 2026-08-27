@@ -1,0 +1,15 @@
+I compared the DBA recommendations against the RDS module we already built from the TaskTop architecture/design.
+
+Our current configuration is Aurora PostgreSQL, not standard RDS PostgreSQL, so a few of the recommendations map differently:
+
+* db.r6g.large instances as specified in the TaskTop design.
+* Aurora PostgreSQL cluster with 2 DB instances across separate AZs for HA/failover. Aurora doesn’t use the standard RDS MultiAZ = true setting.
+* Aurora-managed distributed storage, so AllocatedStorage = 50 and gp2 aren’t applicable.
+* Private only (PubliclyAccessible = false).
+* Storage encryption enabled with KMS.
+* Snapshot tag copying enabled.
+* PostgreSQL logs/monitoring and Secrets Manager integration are included in the module.
+
+The main differences are the DBA document showing standard RDS PostgreSQL (postgres, db.t3.small, PostgreSQL 13.6), whereas the architecture we were provided calls for Aurora PostgreSQL with db.r6g.large.
+
+For now I’m keeping the Terraform aligned with the approved TaskTop design rather than changing the architecture based on the generic RDS recommendations. The module is already in place and the Terraform plan is successful.
