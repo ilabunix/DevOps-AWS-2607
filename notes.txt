@@ -1,0 +1,15 @@
+Subject: FedIdentity Access Request – AWS Admin Role
+
+Hi Team,
+
+FedIdentity is currently unavailable, and I’m unable to submit the access request through the normal process.
+
+I need access to the following entitlement for a critical activity/change currently in progress:
+
+Entitlement: 
+
+Could you please assist with processing this request from the backend and granting me access to the role while FedIdentity is unavailable?
+
+Please let me know if you need any additional information, approval, or supporting details from my side to process the request.
+
+Thank you for your assistance.
