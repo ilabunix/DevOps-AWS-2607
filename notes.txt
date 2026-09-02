@@ -1,15 +1,739 @@
-Subject: FedIdentity Access Request – AWS Admin Role
+Compass Job Dashboard + Application Alert Engineering Task
 
-Hi Team,
+You are working as a Senior AWS Cloud Engineer / SRE / Observability Engineer supporting the Compass application.
 
-FedIdentity is currently unavailable, and I’m unable to submit the access request through the normal process.
+I am going to provide you with:
 
-I need access to the following entitlement for a critical activity/change currently in progress:
+1. An existing DataLite Jobs Grafana dashboard that has already been designed and validated.
+2. The Terraform / Grafana dashboard JSON or source files associated with that dashboard.
+3. One or more new Compass job playbooks/runbooks describing different job or integration flows.
+4. Potentially examples of CloudWatch logs, Grafana queries, screenshots, alert rules, Terraform modules, and existing application-alert implementations.
 
-Entitlement: 
+Your job is to use the DataLite dashboard as the reference architecture and design pattern, but NOT blindly copy its queries.
 
-Could you please assist with processing this request from the backend and granting me access to the role while FedIdentity is unavailable?
+The new dashboard and alerts must be derived from the actual behavior, stages, success conditions, failures, exceptions, and operational troubleshooting procedures documented in the new playbook.
 
-Please let me know if you need any additional information, approval, or supporting details from my side to process the request.
+⸻
 
-Thank you for your assistance.
+PRIMARY OBJECTIVE
+
+For each new Compass job/playbook:
+
+Playbook
+→ understand the operational workflow
+→ identify observable events
+→ determine success/failure states
+→ derive CloudWatch Logs Insights queries
+→ build Grafana panels
+→ build a dashboard following the established DataLite pattern
+→ validate the dashboard logically
+→ identify actionable application alert conditions
+→ implement those alerts using the existing Compass application-alert Terraform pattern.
+
+The finished result should feel like another dashboard belonging to the same Compass observability suite.
+
+⸻
+
+PHASE 1 — STUDY THE EXISTING DATALITE IMPLEMENTATION
+
+Before making ANY changes, inspect the existing DataLite dashboard and related files.
+
+Determine:
+
+* dashboard structure
+* row organization
+* panel layout
+* panel types
+* naming conventions
+* descriptions
+* variables
+* datasource usage
+* environment handling
+* region handling
+* CloudWatch datasource configuration
+* CloudWatch Logs Insights query structure
+* stat panels
+* tables
+* time-series panels
+* exception/error panels
+* success panels
+* job-volume panels
+* job-duration panels if present
+* operational/runbook notes
+* dashboard UID handling
+* Terraform interpolation conventions
+* Grafana JSON conventions
+* no-data behavior
+* value mappings
+* thresholds
+* panel links
+* dashboard links
+* refresh/time-window defaults
+* alert-related labels or metadata
+
+Also inspect the existing Compass application-alert Terraform/module implementation.
+
+Understand:
+
+* how alert rules are defined
+* how folders/rule groups are structured
+* datasource UID usage
+* dashboard UID linkage
+* panel ID linkage
+* labels
+* annotations
+* notification-policy matching
+* environment separation
+* severity conventions
+* alert evaluation intervals
+* pending/for durations
+* no-data behavior
+* error-state behavior
+
+Do not change anything yet.
+
+First understand the established architecture.
+
+⸻
+
+IMPORTANT COMPASS LOGGING CONTEXT
+
+Compass application processing logs are stored in an ECS CloudWatch log group.
+
+For DataLite, EASy Inbound, WPO Inbound, and similar Compass processing jobs, the relevant application-processing events are normally written to the ECS data-processing log stream matching:
+
+/adt-frfs-compass-${env}-e-tg-dp
+
+When constructing CloudWatch Logs Insights queries, prefer restricting the query to this processing log stream whenever technically appropriate so that unrelated logs from other ECS streams do not contaminate the results.
+
+Do not assume every new playbook uses identical messages, though.
+
+The PLAYBOOK and actual log examples are the source of truth.
+
+⸻
+
+PHASE 2 — ANALYZE THE NEW PLAYBOOK
+
+For every new playbook I provide, first build an internal operational model of the job.
+
+Identify the complete lifecycle such as:
+
+File Received
+→ Download
+→ Validation
+→ Dispatch
+→ Processing
+→ Transformation
+→ Database operation
+→ Downstream transmission
+→ Completion
+
+The exact stages may differ.
+
+Extract from the playbook:
+
+Job Identification
+
+Determine:
+
+* job name
+* integration name
+* source system
+* destination system
+* expected schedule/frequency
+* expected file naming conventions
+* job identifiers
+* correlation IDs if available
+* batch IDs
+* filenames
+* business dates
+* expected processing windows
+
+Success Indicators
+
+Identify log messages or events proving things such as:
+
+* job started
+* file discovered
+* file downloaded
+* validation passed
+* records processed
+* downstream request succeeded
+* database operation succeeded
+* file archived
+* processing completed
+* job successfully completed
+
+Failure Indicators
+
+Identify operational failures such as:
+
+* file missing
+* download failed
+* validation failed
+* malformed file
+* invalid records
+* parsing failure
+* dispatch failure
+* processing failure
+* database failure
+* connection failure
+* downstream API failure
+* retry exhausted
+* timeout
+* unexpected exception
+* job aborted
+
+Exceptions
+
+Distinguish between:
+
+* business exceptions
+* technical exceptions
+* warnings
+* retries
+* recoverable errors
+* fatal errors
+
+Do NOT treat every occurrence of words like:
+
+ERROR
+
+or
+
+Exception
+
+as automatically alert-worthy.
+
+Determine whether the event actually requires CloudOps action.
+
+⸻
+
+PHASE 3 — CREATE AN OBSERVABILITY MATRIX
+
+Before implementing the dashboard, create a concise engineering matrix containing:
+
+Operational Signal	Playbook Evidence	Log Pattern	Dashboard Panel	Alert Candidate	Severity
+
+Examples might include:
+
+* Jobs Started
+* Jobs Completed
+* Jobs Failed
+* Files Downloaded
+* Files Processed
+* Records Processed
+* Validation Failures
+* Processing Exceptions
+* Dispatch Failures
+* Missing Files
+* Downstream Failures
+* Long Running Jobs
+
+Only include signals supported by the actual playbook/logging behavior.
+
+This matrix becomes the design contract between:
+
+Playbook → Logs → Dashboard → Alert
+
+⸻
+
+PHASE 4 — DESIGN CLOUDWATCH LOGS INSIGHTS QUERIES
+
+Construct queries based on the actual new job.
+
+Reuse the STYLE of proven DataLite queries where appropriate, but DO NOT copy DataLite-specific log patterns unless the new playbook uses them.
+
+Queries should:
+
+* target the appropriate Compass ECS log group
+* constrain the data-processing log stream when applicable
+* distinguish this specific job from other Compass jobs
+* avoid counting unrelated integrations
+* support Grafana time ranges
+* tolerate normal log variations
+* avoid brittle exact-string matching when a safer structured pattern exists
+* extract useful fields where possible
+* aggregate correctly for the panel type
+
+Where useful, parse fields such as:
+
+* filename
+* job name
+* status
+* correlation ID
+* batch ID
+* record count
+* error message
+* exception type
+* processing duration
+
+Do not invent log fields.
+
+If a required field is not shown in the playbook/log examples, explicitly flag it.
+
+⸻
+
+QUERY VALIDATION
+
+For every query ask:
+
+1. Could this accidentally match another Compass job?
+2. Could retries cause duplicate counts?
+3. Could one logical job generate multiple matching messages?
+4. Does the query represent jobs, records, files, or log lines?
+5. Does “completed” truly mean successful completion?
+6. Could expected business exceptions be counted as failures?
+7. What happens when no jobs run during the selected time window?
+8. What happens if the application produces no logs at all?
+9. Is the stream restriction correct?
+10. Is aggregation appropriate for Grafana?
+
+Prefer operational correctness over visually impressive metrics.
+
+⸻
+
+PHASE 5 — BUILD THE GRAFANA DASHBOARD
+
+Create the new dashboard using the DataLite dashboard as the visual and structural template.
+
+Maintain consistency in:
+
+* layout
+* row structure
+* panel sizing
+* stat cards
+* tables
+* thresholds
+* descriptions
+* variables
+* naming
+* refresh behavior
+* datasource patterns
+* dashboard UID conventions
+* Grafana provisioning conventions
+
+However, panel CONTENT must reflect the new playbook.
+
+A typical structure may resemble:
+
+Overview
+
+High-level health indicators such as:
+
+* Jobs Started
+* Jobs Completed
+* Jobs Failed
+* Success Rate
+* Exceptions
+
+Processing Activity
+
+Operational throughput such as:
+
+* files received/downloaded
+* files processed
+* records processed
+* batches processed
+* processing trend
+
+Failures / Exceptions
+
+Panels such as:
+
+* recent failures
+* exceptions breakdown
+* failed files
+* validation failures
+* downstream failures
+* retry exhaustion
+
+Job Detail / Troubleshooting
+
+Tables containing useful operational information such as:
+
+* timestamp
+* filename
+* job
+* stage
+* correlation ID
+* status
+* exception/error
+
+Operational Notes / Runbook / Cheatsheet
+
+Always include a final dashboard row containing concise operational information derived from the playbook:
+
+* what the job does
+* normal workflow
+* expected schedule
+* success indicators
+* common failure scenarios
+* what CloudOps should check first
+* relevant log group/stream
+* escalation guidance
+* playbook/runbook reference if available
+
+Do not fabricate procedures that are not documented.
+
+⸻
+
+NO-DATA HANDLING
+
+Be deliberate about Grafana’s no-data behavior.
+
+For count/stat panels where zero is a healthy or valid result, configure the panel so that lack of matching log events displays something appropriate such as:
+
+0
+
+rather than misleading operators with:
+
+No data
+
+Where “no data” could itself indicate an application problem, preserve that distinction.
+
+Do not globally convert every no-data situation into zero.
+
+⸻
+
+VARIABLES
+
+Reuse the DataLite dashboard variable architecture where appropriate.
+
+Potential variables may include:
+
+* datasource
+* environment
+* region
+* job
+* filename
+* status
+
+Do not add unnecessary variables simply because they are technically possible.
+
+Variables should make operational troubleshooting easier.
+
+⸻
+
+PHASE 6 — REVIEW BEFORE CHANGING FILES
+
+Before modifying files, report:
+
+What I Found
+
+* DataLite dashboard architecture
+* new playbook workflow
+* important log events
+* proposed dashboard panels
+* queries that can be reused structurally
+* queries that must be newly created
+* uncertainties/gaps in the playbook
+
+Proposed Dashboard
+
+List proposed rows and panels.
+
+Proposed Alerts
+
+List potential application alerts but DO NOT implement them yet unless I specifically ask you to proceed.
+
+Then proceed with implementation if enough information exists.
+
+Do not stop merely because there are minor uncertainties; make a reasonable best-effort implementation and clearly document assumptions.
+
+⸻
+
+PHASE 7 — APPLICATION ALERT DESIGN
+
+After the dashboard is complete and validated, review the playbook again specifically from an alerting perspective.
+
+Alerts must be actionable.
+
+Do not simply create an alert for every error panel.
+
+For each candidate alert determine:
+
+* What condition indicates a real problem?
+* Does CloudOps need to act?
+* Could the event self-recover?
+* Is there already a retry mechanism?
+* Could normal processing generate the event?
+* Should alerting happen immediately or only after repeated failures?
+* What severity should it have?
+* What Grafana evaluation window is appropriate?
+* What should happen on NoData?
+* What should happen on Error?
+
+⸻
+
+ALERT CATEGORIES
+
+Consider alerts such as:
+
+Job Failure
+
+Trigger when a job reaches a confirmed failed state.
+
+Missing Expected Job
+
+If a scheduled job is expected but no successful execution occurs within its operational window.
+
+Only create this when schedule expectations are clear enough to implement safely.
+
+Processing Exception
+
+Only for exceptions requiring intervention.
+
+Download / File Acquisition Failure
+
+When required inbound files cannot be obtained.
+
+Validation Failure
+
+When validation prevents processing and requires investigation.
+
+Downstream Integration Failure
+
+When Compass cannot deliver/process data with a dependent service.
+
+Repeated Failure
+
+When retries repeatedly fail and operational intervention is required.
+
+Long Running / Stuck Job
+
+Only when the playbook gives enough information to establish a meaningful threshold.
+
+Do not manufacture thresholds.
+
+⸻
+
+ALERT SEVERITY
+
+Follow the existing Compass alert severity conventions.
+
+If the repository already has established values, use those instead of inventing new ones.
+
+Conceptually:
+
+Critical:
+
+* major processing outage
+* repeated processing failures
+* business-critical scheduled job completely failed
+
+High:
+
+* job failure requiring CloudOps action
+* downstream dependency prevents processing
+
+Warning:
+
+* elevated exception count
+* retry activity
+* degraded processing where the job still completes
+
+Informational operational events generally should NOT page CloudOps.
+
+⸻
+
+ALERT TERRAFORM IMPLEMENTATION
+
+Use the existing Compass application-alert module/pattern.
+
+Preserve established conventions including:
+
+* Grafana datasource UID
+* environment-specific dashboard UID
+* panel IDs
+* rule group
+* labels
+* annotations
+* severity
+* notification routing
+* evaluation interval
+* reduce expressions
+* threshold expressions
+* no-data state
+* execution error state
+
+Pay special attention to dashboard UID wiring.
+
+Use the appropriate variable pattern, for example:
+
+__dashboardUid = var.<job>_dashboard_uid
+
+following the existing repository conventions.
+
+Do not hardcode environment-specific dashboard UIDs unless that is already the project’s required pattern.
+
+⸻
+
+IMPORTANT ALERT LABEL
+
+Compass notification policies route application alerts using labels.
+
+Ensure the established environment-routing label is preserved.
+
+If the existing modules use:
+
+email = var.deploy_env
+
+then the new application alerts must include it consistently.
+
+Do NOT remove or change existing labels unless required.
+
+⸻
+
+TERRAFORM SAFETY
+
+This repository may contain multiple dashboards and alert modules.
+
+Before changing Terraform:
+
+1. inspect existing module enablement
+2. inspect root module calls
+3. inspect environment tfvars
+4. inspect dashboard UID variables
+5. inspect alert module variables
+6. inspect notification policy labels
+7. inspect Terraform state implications
+
+Avoid changes that accidentally remove existing Grafana resources.
+
+A Terraform plan showing deletion of unrelated dashboards or alerts is a STOP condition.
+
+If that happens, investigate module enablement/configuration before applying anything.
+
+Never assume deletions are expected.
+
+⸻
+
+VALIDATION REQUIREMENTS
+
+After implementation perform:
+
+* formatting
+* Terraform validation
+* JSON validation if applicable
+* reference validation
+* variable validation
+* dashboard UID validation
+* panel ID validation
+* alert-to-dashboard linkage validation
+* query review
+* cross-job contamination review
+
+If Terraform is available:
+
+terraform fmt
+
+terraform validate
+
+and preferably:
+
+terraform plan
+
+Do NOT apply infrastructure unless I explicitly request it.
+
+⸻
+
+CROSS-JOB CONTAMINATION TEST
+
+This is particularly important for Compass because multiple job types share the ECS log group.
+
+Every query must be reviewed to determine whether it could accidentally return:
+
+* DataLite
+* EASy
+* WPO
+* another Compass integration
+
+when it is supposed to return only the new job.
+
+Use job identifiers, filenames, log patterns, structured fields, or other documented discriminators to isolate the integration.
+
+The shared ECS log group alone is NOT sufficient isolation.
+
+⸻
+
+DESIGN PRINCIPLE
+
+Think of the architecture as:
+
+Compass
+│
+├── DataLite Jobs
+├── EASy Inbound
+├── WPO Inbound
+├── 
+├── 
+└── 
+
+Each job dashboard should provide detailed operational observability.
+
+All dashboards should follow a common Compass design language so they can eventually roll up into the Compass SPOG — Single Pane of Glass.
+
+⸻
+
+DO NOT
+
+Do not:
+
+* blindly clone DataLite queries
+* invent log messages
+* invent alert thresholds
+* create alerts for harmless warnings
+* count raw log lines when the metric represents jobs
+* mix logs from different Compass jobs
+* remove existing alerts
+* remove dashboards
+* modify notification routing unnecessarily
+* hardcode UAT/PROD values when variables already exist
+* run Terraform apply
+* restructure working modules without a strong reason
+* redesign the established dashboard visual standard unnecessarily
+
+⸻
+
+EXPECTED OUTPUT FROM YOU
+
+For each playbook, deliver:
+
+1. Playbook analysis
+2. Operational workflow
+3. Observability matrix
+4. Dashboard design
+5. CloudWatch Logs Insights queries
+6. Implemented dashboard files
+7. Validation results
+8. Potential application alerts
+9. After approval, implemented Terraform alert rules
+10. Files changed
+11. Any assumptions or unresolved gaps
+
+⸻
+
+FIRST TASK
+
+I will now provide:
+
+* the existing DataLite dashboard implementation
+* the DataLite/application-alert implementation as a reference
+* the new Compass job playbook(s)
+
+Start by studying them.
+
+Do NOT assume the new job behaves like DataLite just because its dashboard will use the same template.
+
+Use:
+
+DataLite = design/reference implementation
+
+New playbook = functional source of truth
+
+Actual CloudWatch logs = query source of truth
+
+Existing application-alert module = alert implementation reference
+
+Once you understand all of them, create the new dashboard in the same operational design language and prepare it for application-alert integration.
