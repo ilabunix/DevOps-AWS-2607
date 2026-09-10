@@ -1,16 +1,9 @@
-You can send:
+Quick update on TaskTop Terraform: I reviewed and remediated the undeclared module dependencies that were causing the DEV deployment to require manual sequencing/commenting resources in and out.
 
-I got more details from Eric on how DEV was set up. It was not just a straightforward pipeline deployment — there was manual Terraform sequencing, sections were commented out, resources were deployed in stages, IDs were captured and reused, and there is also certificate setup involved.
+The dependencies between the IAM role/instance profile, instance profile/EC2, and ALB target group attachment have now been explicitly wired through Terraform rather than relying on name-based lookups/existing resources.
 
-Based on that, I can’t confidently estimate this as a 1–2 hour effort right now. I need to review the Terraform and understand/fix the deployment flow first so we’re not repeating the same manual process in UAT.
+I pushed the changes to the repo and validated them in DEV. Terraform plan and apply both completed successfully, with DEV ultimately showing no infrastructure changes/drift.
 
+This gives us much more confidence that UAT can be deployed through the pipeline in the correct dependency order without repeating the manual staged deployment used in DEV.
 
-You can send:
-
-I discussed with Eric how the TaskTop environment was deployed in DEV. Based on what he shared, the deployment required manually commenting out Terraform sections/resources, deploying them in stages, capturing resource IDs, and then bringing additional components up afterward, with the ALB deployed last.
-
-We really shouldn’t be deploying the environment that way going forward. The IaC should be handling the resource dependencies and passing the required outputs/inputs between modules so the environment can be deployed in a predictable and repeatable way without manually commenting sections in and out.
-
-Before we move into UAT, I think we need to review the Terraform and understand why that sequencing was required in DEV and fix the dependency/module flow where needed. There is also certificate setup that needs to be accounted for.
-
-Because of that, this is more than simply running the UAT pipeline. I’ll need to review the current Terraform/setup first, address or validate the deployment dependencies, and then we can determine the actual UAT deployment steps and effort.
+The remaining prerequisite is the UAT ACM certificate setup/import before the UAT deployment.
