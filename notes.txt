@@ -1,9 +1,16 @@
-Quick update on TaskTop Terraform: I reviewed and remediated the undeclared module dependencies that were causing the DEV deployment to require manual sequencing/commenting resources in and out.
+I dug further into the TaskTop DEV instance and reviewed both the server.xml and the TaskTop properties template to understand how the instance-level certificate is supposed to be installed.
 
-The dependencies between the IAM role/instance profile, instance profile/EC2, and ALB target group attachment have now been explicitly wired through Terraform rather than relying on name-based lookups/existing resources.
+TaskTop is listening on HTTPS/8443 and the active Tomcat connector is configured to load the certificate from a Java keystore using:
 
-I pushed the changes to the repo and validated them in DEV. Terraform plan and apply both completed successfully, with DEV ultimately showing no infrastructure changes/drift.
+server.ssl.key-store
+server.ssl.key-store-password
+server.ssl.key-store-type
+server.ssl.key-alias
 
-This gives us much more confidence that UAT can be deployed through the pipeline in the correct dependency order without repeating the manual staged deployment used in DEV.
+The TaskTop properties file specifically shows the expected keystore type as JKS, with an absolute path to the keystore file on Linux.
 
-The remaining prerequisite is the UAT ACM certificate setup/import before the UAT deployment.
+So for UAT, the clean approach would be to first decide the TaskTop UAT FQDN/DNS name, request the Venafi cert for that hostname, import the cert/private key/chain into a JKS keystore, place the JKS on the EC2 instance, and then point the server.ssl.* properties to it.
+
+We could automate that as part of the deployment as well — for example, store the JKS securely in encrypted S3, keep the keystore password in Secrets Manager, and have the EC2 instance role pull them during bootstrap/deployment.
+
+I would avoid using the EC2 private IP as the certificate CN. The CN/SAN should be the stable FQDN they decide to use for the TaskTop UAT instance.
