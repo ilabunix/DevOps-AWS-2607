@@ -7,8 +7,9 @@ import re
 import sys
 
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 
 # =============================================================================
@@ -34,6 +35,28 @@ def ctext(text, color):
         return text
 
     return f"{color}{text}{Color.RESET}"
+
+
+# =============================================================================
+# TIMEZONE
+# =============================================================================
+
+try:
+    CENTRAL_TZ = ZoneInfo("America/Chicago")
+except Exception:
+    # Fallback for systems without IANA timezone data.
+    # September is CDT (UTC-05).
+    CENTRAL_TZ = timezone(
+        timedelta(hours=-5),
+        name="CDT",
+    )
+
+
+def central_time(dt):
+    return (
+        dt.astimezone(CENTRAL_TZ)
+        .strftime("%Y-%m-%d %H:%M:%S %Z")
+    )
 
 
 # =============================================================================
@@ -351,19 +374,10 @@ def find_flb_files(s3, requested_date):
             )
 
             if match:
-
-                run_timestamp = (
-                    match.group(1)
-                )
-
-                part_number = int(
-                    match.group(2)
-                )
-
                 candidates.append(
                     {
-                        "run_timestamp": run_timestamp,
-                        "part_number": part_number,
+                        "run_timestamp": match.group(1),
+                        "part_number": int(match.group(2)),
                         "object": obj,
                     }
                 )
@@ -405,10 +419,8 @@ def find_flb_files(s3, requested_date):
             for item in selected
         ]
 
-        missing_parts = (
-            find_missing_parts(
-                part_numbers
-            )
+        missing_parts = find_missing_parts(
+            part_numbers
         )
 
         print(
@@ -421,18 +433,22 @@ def find_flb_files(s3, requested_date):
 
         if missing_parts:
 
+            warning = (
+                f"FLB/{family} missing part(s): "
+                f"{','.join(map(str, missing_parts))}"
+            )
+
             print(
                 ctext(
-                    f"    WARNING: Missing part(s): "
+                    f"    WARNING: "
+                    f"Missing part(s): "
                     f"{','.join(map(str, missing_parts))}",
                     Color.YELLOW + Color.BOLD,
                 )
             )
 
             missing.append(
-                f"FLB/{family} "
-                f"missing part(s): "
-                f"{','.join(map(str, missing_parts))}"
+                warning
             )
 
         for item in selected:
@@ -499,18 +515,10 @@ def find_sfdm_files(s3, requested_date):
 
             if match:
 
-                run_timestamp = (
-                    match.group(1)
-                )
-
-                part_number = int(
-                    match.group(2)
-                )
-
                 candidates.append(
                     {
-                        "run_timestamp": run_timestamp,
-                        "part_number": part_number,
+                        "run_timestamp": match.group(1),
+                        "part_number": int(match.group(2)),
                         "object": obj,
                     }
                 )
@@ -552,10 +560,8 @@ def find_sfdm_files(s3, requested_date):
             for item in selected
         ]
 
-        missing_parts = (
-            find_missing_parts(
-                part_numbers
-            )
+        missing_parts = find_missing_parts(
+            part_numbers
         )
 
         print(
@@ -568,18 +574,22 @@ def find_sfdm_files(s3, requested_date):
 
         if missing_parts:
 
+            warning = (
+                f"SFDM/{family} missing part(s): "
+                f"{','.join(map(str, missing_parts))}"
+            )
+
             print(
                 ctext(
-                    f"    WARNING: Missing part(s): "
+                    f"    WARNING: "
+                    f"Missing part(s): "
                     f"{','.join(map(str, missing_parts))}",
                     Color.YELLOW + Color.BOLD,
                 )
             )
 
             missing.append(
-                f"SFDM/{family} "
-                f"missing part(s): "
-                f"{','.join(map(str, missing_parts))}"
+                warning
             )
 
         for item in selected:
@@ -833,6 +843,10 @@ def find_wpo_files(s3):
             latest_obj["Key"]
         )
 
+        local_modified = central_time(
+            latest_obj["LastModified"]
+        )
+
         print(
             f"  {family:<25} "
             f"{ctext(filename, Color.GREEN)}"
@@ -841,7 +855,7 @@ def find_wpo_files(s3):
         print(
             f"  {'':<25} "
             f"LastModified: "
-            f"{latest_obj['LastModified']}"
+            f"{local_modified}"
         )
 
         results.append(
@@ -940,7 +954,7 @@ def display_manifest(files, missing):
 
             print(
                 f"  LastModified : "
-                f"{item['last_modified']}"
+                f"{central_time(item['last_modified'])}"
             )
 
             total_size += (
