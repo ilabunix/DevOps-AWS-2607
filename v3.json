@@ -1,0 +1,3912 @@
+{
+  "id": null,
+  "uid": "compass-jobs-spog-v3",
+  "title": "🧭 Compass Jobs - Single Pane of Glass (v3)",
+  "tags": [
+    "Compass",
+    "Jobs",
+    "SPOG",
+    "CloudOps",
+    "DataLite",
+    "EASy",
+    "WPO",
+    "DataPlatform",
+    "FLB",
+    "SFDM",
+    "v3",
+    "Polished UI",
+    "Operations Console"
+  ],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "5m",
+  "editable": true,
+  "graphTooltip": 1,
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h"
+    ],
+    "time_options": [
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "annotations": {
+    "list": []
+  },
+  "links": [],
+  "templating": {
+    "list": [
+      {
+        "name": "datasource",
+        "label": "CloudWatch",
+        "type": "datasource",
+        "query": "cloudwatch",
+        "refresh": 1,
+        "current": {},
+        "options": []
+      },
+      {
+        "name": "env",
+        "label": "Environment",
+        "type": "custom",
+        "query": "dev,test,uat,prod",
+        "includeAll": false,
+        "multi": false,
+        "current": {
+          "selected": true,
+          "text": "prod",
+          "value": "prod"
+        },
+        "options": []
+      },
+      {
+        "name": "region",
+        "label": "Region",
+        "type": "custom",
+        "query": "us-gov-east-1,us-gov-west-1",
+        "includeAll": false,
+        "multi": false,
+        "current": {
+          "selected": true,
+          "text": "us-gov-west-1",
+          "value": "us-gov-west-1"
+        },
+        "options": []
+      },
+      {
+        "name": "region_short",
+        "label": "Region Short",
+        "type": "custom",
+        "query": "e,w",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "current": {
+          "selected": true,
+          "text": "w",
+          "value": "w"
+        },
+        "options": []
+      },
+      {
+        "name": "data_flow_regex",
+        "label": "Data Flow",
+        "type": "custom",
+        "query": "All : .*,DataLite Store : easyRevenueStoreJob|ftaStoreJob|vpnStoreJob|fedMailStoreJob|nicBhcStoreJob|pileUserStoreJob|routerStoreJob|udyStoreJob|ulmStoreJob,EASy Inbound : easyProfileAddressLoadJob|easyProfileAddressVerifyJob|easyIasLoad|easyIrdDailyLoadJob|easyIrdReconcileLoadJob|easyCompassDataLoadJob|eaBillingCalculationJob|calcSettlementTiersJob|mergeSplitOrgsJob,WPO Inbound : lTermLoadJob|lTermEodJob|securitiesAccountLoadJob|serviceAddressLoadJob|serviceInteractionLoadJob|serviceProviderLoadJob,DataPlatform Export : dataPlatformExportJob|gcdProfileCreateFileJob|gcdAddressCreateFileJob|interestCRSOExportCreateFileJob|arrangementSettlementExportCreateFileJob|arrangementAgentExportCreateFileJob|contactAddressesExportCreateFileJob|legalTermExportCreateFileJob|orgSettlementExportCreateFileJob|securitiesAccountExportCreateFileJob|subscriberServicesCreateFileJob|subscriberCreateFileJob|countriesCreateFileJob|stateCreateFileJob|routerCreateFileJob|vpnCreateFileJob,FLB Outbound : masterBillingJob|vpnReplacementBillingFileCreatorJob|vpnDeviceBillingFileCreatorJob|ftaBillingFileCreatorJob|serverCertBillingFileCreatorJob|vpnMissedBillingFileCreatorJob|vpnModificationBillingFileCreatorJob|fedMailBillingFileCreatorJob|routerBillingFileCreatorJob|paymentBillingFileCreatorJob|subscriberBillingServiceCodeCalcJob|subscriberBillingFileCreatorJob|orgProfileBillingFileCreatorJob|accountingServicesBillingFileCreatorJob,SFDM Integration : masterSalesForceJob|masterSf2CpsJob|organizationSalesForceFileCreatorJob|activeWebSubscribersSalesForceFileCreatorJob|fedlineServicesSalesForceFileCreatorJob|accountingServicesSalesForceFileCreatorJob|serviceProviderSalesForceFileCreatorJob|vpnDataSalesForceFileCreatorJob|accountExecSalesForceFileLoaderJob|euacDetailsSalesForceFileLoaderJob|euacServicesSalesForceFileCreatorJob|serverCertServicesSalesForceFileCreatorJob|browserBillingSalesForceFileCreatorJob|vpnCertServicesSalesForceFileCreatorJob|masterSF2CpsJob",
+        "includeAll": false,
+        "multi": false,
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": ".*"
+        },
+        "options": []
+      },
+      {
+        "name": "job_name",
+        "label": "Job Name",
+        "type": "custom",
+        "query": "accountExecSalesForceFileLoaderJob,accountingServicesBillingFileCreatorJob,accountingServicesSalesForceFileCreatorJob,activeWebSubscribersSalesForceFileCreatorJob,arrangementAgentExportCreateFileJob,arrangementSettlementExportCreateFileJob,browserBillingSalesForceFileCreatorJob,calcSettlementTiersJob,contactAddressesExportCreateFileJob,countriesCreateFileJob,dataPlatformExportJob,eaBillingCalculationJob,easyCompassDataLoadJob,easyIasLoad,easyIrdDailyLoadJob,easyIrdReconcileLoadJob,easyProfileAddressLoadJob,easyProfileAddressVerifyJob,easyRevenueStoreJob,euacDetailsSalesForceFileLoaderJob,euacServicesSalesForceFileCreatorJob,fedMailBillingFileCreatorJob,fedMailStoreJob,fedlineServicesSalesForceFileCreatorJob,ftaBillingFileCreatorJob,ftaStoreJob,gcdAddressCreateFileJob,gcdProfileCreateFileJob,interestCRSOExportCreateFileJob,lTermEodJob,lTermLoadJob,legalTermExportCreateFileJob,masterBillingJob,masterSF2CpsJob,masterSalesForceJob,masterSf2CpsJob,mergeSplitOrgsJob,nicBhcStoreJob,orgProfileBillingFileCreatorJob,orgSettlementExportCreateFileJob,organizationSalesForceFileCreatorJob,paymentBillingFileCreatorJob,pileUserStoreJob,routerBillingFileCreatorJob,routerCreateFileJob,routerStoreJob,securitiesAccountExportCreateFileJob,securitiesAccountLoadJob,serverCertBillingFileCreatorJob,serverCertServicesSalesForceFileCreatorJob,serviceAddressLoadJob,serviceInteractionLoadJob,serviceProviderLoadJob,serviceProviderSalesForceFileCreatorJob,stateCreateFileJob,subscriberBillingFileCreatorJob,subscriberBillingServiceCodeCalcJob,subscriberCreateFileJob,subscriberServicesCreateFileJob,udyStoreJob,ulmStoreJob,vpnCertServicesSalesForceFileCreatorJob,vpnCreateFileJob,vpnDataSalesForceFileCreatorJob,vpnDeviceBillingFileCreatorJob,vpnMissedBillingFileCreatorJob,vpnModificationBillingFileCreatorJob,vpnReplacementBillingFileCreatorJob,vpnStoreJob",
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "options": []
+      },
+      {
+        "name": "log_group",
+        "label": "Compass ECS Log Group",
+        "type": "textbox",
+        "query": "REPLACE_WITH_COMPASS_ECS_LOG_GROUP",
+        "current": {
+          "selected": true,
+          "text": "REPLACE_WITH_COMPASS_ECS_LOG_GROUP",
+          "value": "REPLACE_WITH_COMPASS_ECS_LOG_GROUP"
+        },
+        "options": []
+      },
+      {
+        "name": "ecs_cluster",
+        "label": "ECS Cluster",
+        "type": "query",
+        "datasource": {
+          "type": "cloudwatch",
+          "uid": "$datasource"
+        },
+        "refresh": 1,
+        "query": {
+          "queryType": "dimensionValues",
+          "namespace": "AWS/ECS",
+          "metricName": "CPUUtilization",
+          "dimensionKey": "ClusterName",
+          "region": "$region"
+        },
+        "includeAll": false,
+        "multi": false,
+        "current": {}
+      },
+      {
+        "name": "ecs_service",
+        "label": "ECS Service",
+        "type": "query",
+        "datasource": {
+          "type": "cloudwatch",
+          "uid": "$datasource"
+        },
+        "refresh": 1,
+        "query": {
+          "queryType": "dimensionValues",
+          "namespace": "AWS/ECS",
+          "metricName": "CPUUtilization",
+          "dimensionKey": "ServiceName",
+          "region": "$region",
+          "dimensionFilters": {
+            "ClusterName": "$ecs_cluster"
+          }
+        },
+        "includeAll": false,
+        "multi": false,
+        "current": {}
+      },
+      {
+        "name": "sqs_queue",
+        "label": "Incoming SQS Queue",
+        "type": "query",
+        "datasource": {
+          "type": "cloudwatch",
+          "uid": "$datasource"
+        },
+        "refresh": 1,
+        "query": {
+          "queryType": "dimensionValues",
+          "namespace": "AWS/SQS",
+          "metricName": "ApproximateNumberOfMessagesVisible",
+          "dimensionKey": "QueueName",
+          "region": "$region"
+        },
+        "includeAll": false,
+        "multi": false,
+        "current": {}
+      },
+      {
+        "name": "dlq_queue",
+        "label": "Dead Letter Queue",
+        "type": "query",
+        "datasource": {
+          "type": "cloudwatch",
+          "uid": "$datasource"
+        },
+        "refresh": 1,
+        "query": {
+          "queryType": "dimensionValues",
+          "namespace": "AWS/SQS",
+          "metricName": "ApproximateNumberOfMessagesVisible",
+          "dimensionKey": "QueueName",
+          "region": "$region"
+        },
+        "includeAll": false,
+        "multi": false,
+        "current": {}
+      },
+      {
+        "name": "datalite_dashboard_url",
+        "label": "Datalite Dashboard Url",
+        "type": "textbox",
+        "hide": 2,
+        "query": "REPLACE_ME",
+        "current": {
+          "selected": true,
+          "text": "REPLACE_ME",
+          "value": "REPLACE_ME"
+        },
+        "options": []
+      },
+      {
+        "name": "easy_dashboard_url",
+        "label": "Easy Dashboard Url",
+        "type": "textbox",
+        "hide": 2,
+        "query": "REPLACE_ME",
+        "current": {
+          "selected": true,
+          "text": "REPLACE_ME",
+          "value": "REPLACE_ME"
+        },
+        "options": []
+      },
+      {
+        "name": "wpo_dashboard_url",
+        "label": "Wpo Dashboard Url",
+        "type": "textbox",
+        "hide": 2,
+        "query": "REPLACE_ME",
+        "current": {
+          "selected": true,
+          "text": "REPLACE_ME",
+          "value": "REPLACE_ME"
+        },
+        "options": []
+      },
+      {
+        "name": "dataplatform_dashboard_url",
+        "label": "Dataplatform Dashboard Url",
+        "type": "textbox",
+        "hide": 2,
+        "query": "REPLACE_ME",
+        "current": {
+          "selected": true,
+          "text": "REPLACE_ME",
+          "value": "REPLACE_ME"
+        },
+        "options": []
+      },
+      {
+        "name": "flb_dashboard_url",
+        "label": "Flb Dashboard Url",
+        "type": "textbox",
+        "hide": 2,
+        "query": "REPLACE_ME",
+        "current": {
+          "selected": true,
+          "text": "REPLACE_ME",
+          "value": "REPLACE_ME"
+        },
+        "options": []
+      },
+      {
+        "name": "sfdm_dashboard_url",
+        "label": "Sfdm Dashboard Url",
+        "type": "textbox",
+        "hide": 2,
+        "query": "REPLACE_ME",
+        "current": {
+          "selected": true,
+          "text": "REPLACE_ME",
+          "value": "REPLACE_ME"
+        },
+        "options": []
+      },
+      {
+        "name": "datalite_playbook_url",
+        "label": "Datalite Playbook Url",
+        "type": "textbox",
+        "hide": 2,
+        "query": "REPLACE_ME",
+        "current": {
+          "selected": true,
+          "text": "REPLACE_ME",
+          "value": "REPLACE_ME"
+        },
+        "options": []
+      },
+      {
+        "name": "easy_playbook_url",
+        "label": "Easy Playbook Url",
+        "type": "textbox",
+        "hide": 2,
+        "query": "REPLACE_ME",
+        "current": {
+          "selected": true,
+          "text": "REPLACE_ME",
+          "value": "REPLACE_ME"
+        },
+        "options": []
+      },
+      {
+        "name": "wpo_playbook_url",
+        "label": "Wpo Playbook Url",
+        "type": "textbox",
+        "hide": 2,
+        "query": "REPLACE_ME",
+        "current": {
+          "selected": true,
+          "text": "REPLACE_ME",
+          "value": "REPLACE_ME"
+        },
+        "options": []
+      },
+      {
+        "name": "dataplatform_playbook_url",
+        "label": "Dataplatform Playbook Url",
+        "type": "textbox",
+        "hide": 2,
+        "query": "REPLACE_ME",
+        "current": {
+          "selected": true,
+          "text": "REPLACE_ME",
+          "value": "REPLACE_ME"
+        },
+        "options": []
+      },
+      {
+        "name": "flb_playbook_url",
+        "label": "Flb Playbook Url",
+        "type": "textbox",
+        "hide": 2,
+        "query": "REPLACE_ME",
+        "current": {
+          "selected": true,
+          "text": "REPLACE_ME",
+          "value": "REPLACE_ME"
+        },
+        "options": []
+      },
+      {
+        "name": "sfdm_playbook_url",
+        "label": "Sfdm Playbook Url",
+        "type": "textbox",
+        "hide": 2,
+        "query": "REPLACE_ME",
+        "current": {
+          "selected": true,
+          "text": "REPLACE_ME",
+          "value": "REPLACE_ME"
+        },
+        "options": []
+      },
+      {
+        "name": "compass_infra_url",
+        "label": "Compass Infra Url",
+        "type": "textbox",
+        "hide": 2,
+        "query": "REPLACE_ME",
+        "current": {
+          "selected": true,
+          "text": "REPLACE_ME",
+          "value": "REPLACE_ME"
+        },
+        "options": []
+      },
+      {
+        "name": "architecture_url",
+        "label": "Architecture Url",
+        "type": "textbox",
+        "hide": 2,
+        "query": "REPLACE_ME",
+        "current": {
+          "selected": true,
+          "text": "REPLACE_ME",
+          "value": "REPLACE_ME"
+        },
+        "options": []
+      },
+      {
+        "name": "runbooks_url",
+        "label": "Runbooks Url",
+        "type": "textbox",
+        "hide": 2,
+        "query": "REPLACE_ME",
+        "current": {
+          "selected": true,
+          "text": "REPLACE_ME",
+          "value": "REPLACE_ME"
+        },
+        "options": []
+      },
+      {
+        "name": "alert_rules_url",
+        "label": "Alert Rules Url",
+        "type": "textbox",
+        "hide": 2,
+        "query": "REPLACE_ME",
+        "current": {
+          "selected": true,
+          "text": "REPLACE_ME",
+          "value": "REPLACE_ME"
+        },
+        "options": []
+      },
+      {
+        "name": "oncall_url",
+        "label": "Oncall Url",
+        "type": "textbox",
+        "hide": 2,
+        "query": "REPLACE_ME",
+        "current": {
+          "selected": true,
+          "text": "REPLACE_ME",
+          "value": "REPLACE_ME"
+        },
+        "options": []
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "row",
+      "title": "🧭 1. Compass Jobs Executive Health",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 1
+      },
+      "panels": []
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "⚠️ Compass Processing Health",
+      "description": "Critical processing signals across all six Compass job flows. Top-level health intentionally ignores job filters.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 1,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @logStream, job_name, `log.level`, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter `log.level` = \"ALERT\" or message like /Job Failure|fatal error executing job|BatchStatus: FAILED|Exception when creating ack file|Failed to write file to s3|database connection|Skip limit exceeded|ParallelLockoutListener/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "🎯 Affected Jobs",
+      "description": "Distinct jobs with critical/warning processing signals in the selected time range.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 4,
+        "y": 1,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter message like /Job Failure|FAILED|STOPPED|Skip limit exceeded|ParallelLockoutListener|Exception when creating ack file|Failed to write file to s3/i\n| stats count_distinct(job_name) as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "❌ Failed Jobs",
+      "description": "Failure events across Compass jobs.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 1,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @logStream, job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter message like /Job Failure|Job exit status \\(FAILED\\)|BatchStatus: FAILED|did not complete successfully|fatal error executing job/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "⛔ Stopped / Locked",
+      "description": "STOPPED jobs and parallel lockout events.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 1,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @logStream, job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter message like /Job exit status \\(STOPPED\\)|status=.*STOPPED|Job was stopped|Stopped by ParallelLockoutListener|Stopping job/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "stat",
+      "title": "📥 Incoming Queue",
+      "description": "Messages currently visible on the Compass incoming SQS queue.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 1,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 10
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Metrics",
+          "region": "$region",
+          "namespace": "AWS/SQS",
+          "metricName": "ApproximateNumberOfMessagesVisible",
+          "dimensions": {
+            "QueueName": "$sqs_queue"
+          },
+          "statistic": "Maximum",
+          "period": "300",
+          "matchExact": true,
+          "legendFormat": "Visible"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "stat",
+      "title": "🗄️ DLQ Messages",
+      "description": "Dead-letter queue messages. Any non-zero value should be investigated.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 20,
+        "y": 1,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Metrics",
+          "region": "$region",
+          "namespace": "AWS/SQS",
+          "metricName": "ApproximateNumberOfMessagesVisible",
+          "dimensions": {
+            "QueueName": "$dlq_queue"
+          },
+          "statistic": "Maximum",
+          "period": "300",
+          "matchExact": true,
+          "legendFormat": "DLQ"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "row",
+      "title": "🔷 2. Data Flow Health",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 6,
+        "w": 24,
+        "h": 1
+      },
+      "panels": []
+    },
+    {
+      "id": 9,
+      "type": "stat",
+      "title": "🗄️ DataLite Store Jobs",
+      "description": "Health card for this Compass data flow. 0 detected critical/high signals = HEALTHY; 1 = ATTENTION; 2+ = CRITICAL. Use the Operations Hub for the dedicated dashboard and playbook.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 7,
+        "w": 8,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "HEALTHY",
+                  "color": "green"
+                },
+                "1": {
+                  "text": "ATTENTION",
+                  "color": "yellow"
+                }
+              }
+            },
+            {
+              "type": "range",
+              "options": {
+                "from": 2,
+                "to": 1000000,
+                "result": {
+                  "text": "CRITICAL",
+                  "color": "red"
+                }
+              }
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "value_and_name",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @logStream, job_name, `log.level`, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /easyRevenueStoreJob|ftaStoreJob|vpnStoreJob|fedMailStoreJob|nicBhcStoreJob|pileUserStoreJob|routerStoreJob|udyStoreJob|ulmStoreJob/\n| filter `log.level` in [\"ALERT\",\"ERROR\"] or message like /Job Failure|FAILED|STOPPED|Skip limit exceeded|ParallelLockoutListener|Exception when creating ack file|Failed to write file to s3|Connection is not available/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "stat",
+      "title": "📥 EASy Inbound Jobs",
+      "description": "Health card for this Compass data flow. 0 detected critical/high signals = HEALTHY; 1 = ATTENTION; 2+ = CRITICAL. Use the Operations Hub for the dedicated dashboard and playbook.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 7,
+        "w": 8,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "HEALTHY",
+                  "color": "green"
+                },
+                "1": {
+                  "text": "ATTENTION",
+                  "color": "yellow"
+                }
+              }
+            },
+            {
+              "type": "range",
+              "options": {
+                "from": 2,
+                "to": 1000000,
+                "result": {
+                  "text": "CRITICAL",
+                  "color": "red"
+                }
+              }
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "value_and_name",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @logStream, job_name, `log.level`, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /easyProfileAddressLoadJob|easyProfileAddressVerifyJob|easyIasLoad|easyIrdDailyLoadJob|easyIrdReconcileLoadJob|easyCompassDataLoadJob|eaBillingCalculationJob|calcSettlementTiersJob|mergeSplitOrgsJob/\n| filter `log.level` in [\"ALERT\",\"ERROR\"] or message like /Job Failure|FAILED|STOPPED|Skip limit exceeded|ParallelLockoutListener|Exception when creating ack file|Failed to write file to s3|Connection is not available/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "stat",
+      "title": "⚙️ WPO Inbound Jobs",
+      "description": "Health card for this Compass data flow. 0 detected critical/high signals = HEALTHY; 1 = ATTENTION; 2+ = CRITICAL. Use the Operations Hub for the dedicated dashboard and playbook.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 7,
+        "w": 8,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "HEALTHY",
+                  "color": "green"
+                },
+                "1": {
+                  "text": "ATTENTION",
+                  "color": "yellow"
+                }
+              }
+            },
+            {
+              "type": "range",
+              "options": {
+                "from": 2,
+                "to": 1000000,
+                "result": {
+                  "text": "CRITICAL",
+                  "color": "red"
+                }
+              }
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "value_and_name",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @logStream, job_name, `log.level`, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /lTermLoadJob|lTermEodJob|securitiesAccountLoadJob|serviceAddressLoadJob|serviceInteractionLoadJob|serviceProviderLoadJob/\n| filter `log.level` in [\"ALERT\",\"ERROR\"] or message like /Job Failure|FAILED|STOPPED|Skip limit exceeded|ParallelLockoutListener|Exception when creating ack file|Failed to write file to s3|Connection is not available/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "stat",
+      "title": "📊 DataPlatform Export Jobs",
+      "description": "Health card for this Compass data flow. 0 detected critical/high signals = HEALTHY; 1 = ATTENTION; 2+ = CRITICAL. Use the Operations Hub for the dedicated dashboard and playbook.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 12,
+        "w": 8,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "HEALTHY",
+                  "color": "green"
+                },
+                "1": {
+                  "text": "ATTENTION",
+                  "color": "yellow"
+                }
+              }
+            },
+            {
+              "type": "range",
+              "options": {
+                "from": 2,
+                "to": 1000000,
+                "result": {
+                  "text": "CRITICAL",
+                  "color": "red"
+                }
+              }
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "value_and_name",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @logStream, job_name, `log.level`, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /dataPlatformExportJob|gcdProfileCreateFileJob|gcdAddressCreateFileJob|interestCRSOExportCreateFileJob|arrangementSettlementExportCreateFileJob|arrangementAgentExportCreateFileJob|contactAddressesExportCreateFileJob|legalTermExportCreateFileJob|orgSettlementExportCreateFileJob|securitiesAccountExportCreateFileJob|subscriberServicesCreateFileJob|subscriberCreateFileJob|countriesCreateFileJob|stateCreateFileJob|routerCreateFileJob|vpnCreateFileJob/\n| filter `log.level` in [\"ALERT\",\"ERROR\"] or message like /Job Failure|FAILED|STOPPED|Skip limit exceeded|ParallelLockoutListener|Exception when creating ack file|Failed to write file to s3|Connection is not available/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "stat",
+      "title": "↔️ FLB Outbound Jobs",
+      "description": "Health card for this Compass data flow. 0 detected critical/high signals = HEALTHY; 1 = ATTENTION; 2+ = CRITICAL. Use the Operations Hub for the dedicated dashboard and playbook.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 12,
+        "w": 8,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "HEALTHY",
+                  "color": "green"
+                },
+                "1": {
+                  "text": "ATTENTION",
+                  "color": "yellow"
+                }
+              }
+            },
+            {
+              "type": "range",
+              "options": {
+                "from": 2,
+                "to": 1000000,
+                "result": {
+                  "text": "CRITICAL",
+                  "color": "red"
+                }
+              }
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "value_and_name",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @logStream, job_name, `log.level`, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /masterBillingJob|vpnReplacementBillingFileCreatorJob|vpnDeviceBillingFileCreatorJob|ftaBillingFileCreatorJob|serverCertBillingFileCreatorJob|vpnMissedBillingFileCreatorJob|vpnModificationBillingFileCreatorJob|fedMailBillingFileCreatorJob|routerBillingFileCreatorJob|paymentBillingFileCreatorJob|subscriberBillingServiceCodeCalcJob|subscriberBillingFileCreatorJob|orgProfileBillingFileCreatorJob|accountingServicesBillingFileCreatorJob/\n| filter `log.level` in [\"ALERT\",\"ERROR\"] or message like /Job Failure|FAILED|STOPPED|Skip limit exceeded|ParallelLockoutListener|Exception when creating ack file|Failed to write file to s3|Connection is not available/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "stat",
+      "title": "🔗 SFDM Integration",
+      "description": "Health card for this Compass data flow. 0 detected critical/high signals = HEALTHY; 1 = ATTENTION; 2+ = CRITICAL. Use the Operations Hub for the dedicated dashboard and playbook.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 12,
+        "w": 8,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "HEALTHY",
+                  "color": "green"
+                },
+                "1": {
+                  "text": "ATTENTION",
+                  "color": "yellow"
+                }
+              }
+            },
+            {
+              "type": "range",
+              "options": {
+                "from": 2,
+                "to": 1000000,
+                "result": {
+                  "text": "CRITICAL",
+                  "color": "red"
+                }
+              }
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "value_and_name",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @logStream, job_name, `log.level`, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /masterSalesForceJob|masterSf2CpsJob|organizationSalesForceFileCreatorJob|activeWebSubscribersSalesForceFileCreatorJob|fedlineServicesSalesForceFileCreatorJob|accountingServicesSalesForceFileCreatorJob|serviceProviderSalesForceFileCreatorJob|vpnDataSalesForceFileCreatorJob|accountExecSalesForceFileLoaderJob|euacDetailsSalesForceFileLoaderJob|euacServicesSalesForceFileCreatorJob|serverCertServicesSalesForceFileCreatorJob|browserBillingSalesForceFileCreatorJob|vpnCertServicesSalesForceFileCreatorJob|masterSF2CpsJob/\n| filter `log.level` in [\"ALERT\",\"ERROR\"] or message like /Job Failure|FAILED|STOPPED|Skip limit exceeded|ParallelLockoutListener|Exception when creating ack file|Failed to write file to s3|Connection is not available/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "type": "row",
+      "title": "🩺 3. Compass Jobs Health Matrix & Current Alerts",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 17,
+        "w": 24,
+        "h": 1
+      },
+      "panels": []
+    },
+    {
+      "id": 16,
+      "type": "table",
+      "title": "🩺 Compass Jobs Health Matrix",
+      "description": "Most recent terminal status/event by Compass job.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 18,
+        "w": 16,
+        "h": 12
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false,
+          "reducer": [
+            "sum"
+          ],
+          "countRows": false,
+          "fields": ""
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter message like /COMPLETED|FAILED|STOPPED|Job Failure|BatchStatus/\n| parse message /(?<status>COMPLETED|FAILED|STOPPED)/\n| sort @timestamp desc\n| dedup job_name\n| fields @timestamp as LastEvent, job_name as Job, status as Status, message as Message\n| sort LastEvent desc\n| limit 200",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "type": "alertlist",
+      "title": "🔔 Current Compass Alerts",
+      "gridPos": {
+        "x": 16,
+        "y": 18,
+        "w": 8,
+        "h": 12
+      },
+      "options": {
+        "alertInstanceLabelFilter": "application=compass",
+        "alertName": "",
+        "dashboardAlerts": false,
+        "groupBy": [
+          "alertname"
+        ],
+        "maxItems": 20,
+        "sortOrder": 1,
+        "stateFilter": {
+          "firing": true,
+          "pending": true,
+          "normal": false,
+          "noData": true,
+          "error": true
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "row",
+      "title": "⏱️ 4. Processing Freshness / Last Success",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 30,
+        "w": 24,
+        "h": 1
+      },
+      "panels": []
+    },
+    {
+      "id": 19,
+      "type": "table",
+      "title": "⏱️ Last Successful Processing by Job",
+      "description": "Shows latest successful processing time. Add expected-by/overdue logic after production schedules are supplied.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 31,
+        "w": 24,
+        "h": 10
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false,
+          "reducer": [
+            "sum"
+          ],
+          "countRows": false,
+          "fields": ""
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /${data_flow_regex:raw}/\n| filter job_name like /${job_name:raw}/\n| filter message like /COMPLETED|completed successfully|BatchStatus: COMPLETED/i\n| stats max(@timestamp) as LastSuccess by job_name\n| sort LastSuccess desc",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "row",
+      "title": "📈 5. Job Processing Activity",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 41,
+        "w": 24,
+        "h": 1
+      },
+      "panels": []
+    },
+    {
+      "id": 21,
+      "type": "stat",
+      "title": "▶️ Started",
+      "description": "Started events for the selected flow/job scope.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 42,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @logStream, job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /${data_flow_regex:raw}/\n| filter job_name like /${job_name:raw}/\n| filter message like /Starting job|status=STARTED|BatchStatus: STARTED/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "type": "stat",
+      "title": "✅ Completed",
+      "description": "Completed events for the selected flow/job scope.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 4,
+        "y": 42,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @logStream, job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /${data_flow_regex:raw}/\n| filter job_name like /${job_name:raw}/\n| filter message like /COMPLETED|completed successfully|BatchStatus: COMPLETED/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "type": "stat",
+      "title": "❌ Failed",
+      "description": "Failed events for the selected flow/job scope.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 42,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @logStream, job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /${data_flow_regex:raw}/\n| filter job_name like /${job_name:raw}/\n| filter message like /Job Failure|FAILED|BatchStatus: FAILED|did not complete successfully/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "type": "stat",
+      "title": "⛔ Stopped",
+      "description": "Stopped events for the selected flow/job scope.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 42,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 3
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @logStream, job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /${data_flow_regex:raw}/\n| filter job_name like /${job_name:raw}/\n| filter message like /STOPPED|Job was stopped|Stopped by ParallelLockoutListener/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "type": "stat",
+      "title": "🔁 Retried / Skipped",
+      "description": "Retried / Skipped events for the selected flow/job scope.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 42,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 5
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @logStream, job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /${data_flow_regex:raw}/\n| filter job_name like /${job_name:raw}/\n| filter message like /retry|retrying|Skipped in step|records skipped/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "type": "stat",
+      "title": "⚠️ Lockout / Threshold",
+      "description": "Lockout / Threshold events for the selected flow/job scope.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 20,
+        "y": 42,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 3
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @logStream, job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /${data_flow_regex:raw}/\n| filter job_name like /${job_name:raw}/\n| filter message like /ParallelLockoutListener|Skip limit exceeded|volume threshold|volume.*exceeded/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "type": "timeseries",
+      "title": "📈 Jobs Processed Over Time",
+      "description": "Started, completed, and failed events for selected scope.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 47,
+        "w": 16,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            },
+            "axisPlacement": "auto",
+            "axisLabel": "",
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "hideFrom": {
+              "tooltip": false,
+              "viz": false,
+              "legend": false
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc",
+          "hideZeros": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /${data_flow_regex:raw}/\n| filter job_name like /${job_name:raw}/\n| filter message like /Starting job|status=STARTED|BatchStatus: STARTED/i\n| stats count() as Started by bin(15m)",
+          "statsGroups": [],
+          "legendFormat": ""
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /${data_flow_regex:raw}/\n| filter job_name like /${job_name:raw}/\n| filter message like /COMPLETED|completed successfully|BatchStatus: COMPLETED/i\n| stats count() as Completed by bin(15m)",
+          "statsGroups": [],
+          "legendFormat": ""
+        },
+        {
+          "refId": "C",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /${data_flow_regex:raw}/\n| filter job_name like /${job_name:raw}/\n| filter message like /Job Failure|FAILED|BatchStatus: FAILED|did not complete successfully/i\n| stats count() as Failed by bin(15m)",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "type": "table",
+      "title": "📉 Failures by Job",
+      "description": "Jobs contributing failures in the selected time range.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 47,
+        "w": 8,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false,
+          "reducer": [
+            "sum"
+          ],
+          "countRows": false,
+          "fields": ""
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter message like /Job Failure|FAILED|BatchStatus: FAILED|did not complete successfully/i\n| stats count() as Failures by job_name\n| sort Failures desc\n| limit 25",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "type": "row",
+      "title": "🚨 6. Exception Summary",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 56,
+        "w": 24,
+        "h": 1
+      },
+      "panels": []
+    },
+    {
+      "id": 30,
+      "type": "stat",
+      "title": "❌ Job Failures",
+      "description": "Job Failures for selected scope.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 57,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /${data_flow_regex:raw}/\n| filter job_name like /${job_name:raw}/\n| filter message like /Job Failure|fatal error executing job|BatchStatus: FAILED|did not complete successfully/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "type": "stat",
+      "title": "⚠️ Step Errors",
+      "description": "Step Errors for selected scope.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 4,
+        "y": 57,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /${data_flow_regex:raw}/\n| filter job_name like /${job_name:raw}/\n| filter message like /error executing step|error saving batch meta data|Exception when creating parser|Failed to initialize the reader/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "type": "stat",
+      "title": "🔢 Record Mismatches",
+      "description": "Record Mismatches for selected scope.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 57,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /${data_flow_regex:raw}/\n| filter job_name like /${job_name:raw}/\n| filter message like /record count mismatch|RecordCountMismatchException|DataLite record count mismatch/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "type": "stat",
+      "title": "⏭️ Skip / Volume",
+      "description": "Skip / Volume for selected scope.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 57,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /${data_flow_regex:raw}/\n| filter job_name like /${job_name:raw}/\n| filter message like /Skip limit exceeded|SkipLimitExceededException|volume threshold|volume.*exceeded/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "type": "stat",
+      "title": "📄 File Errors",
+      "description": "File Errors for selected scope.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 57,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /${data_flow_regex:raw}/\n| filter job_name like /${job_name:raw}/\n| filter message like /FileNotFoundException|FlatFileParseException|IncorrectLineLengthException|BindException/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "type": "stat",
+      "title": "🔒 Lockouts",
+      "description": "Lockouts for selected scope.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 20,
+        "y": 57,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /${data_flow_regex:raw}/\n| filter job_name like /${job_name:raw}/\n| filter message like /ParallelLockoutListener|Cannot find Job object|Stopping job/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "type": "stat",
+      "title": "🛢️ DB Errors",
+      "description": "DB Errors for selected scope.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 62,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /${data_flow_regex:raw}/\n| filter job_name like /${job_name:raw}/\n| filter message like /Connection is not available|SQLException|HikariPool|database connection/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "type": "stat",
+      "title": "☁️ S3 Failures",
+      "description": "S3 Failures for selected scope.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 4,
+        "y": 62,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /${data_flow_regex:raw}/\n| filter job_name like /${job_name:raw}/\n| filter message like /Failed to write file to s3|S3Exception|AccessDenied/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "type": "stat",
+      "title": "📨 ACK Failures",
+      "description": "ACK Failures for selected scope.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 62,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /${data_flow_regex:raw}/\n| filter job_name like /${job_name:raw}/\n| filter message like /Exception when creating ack file/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "type": "stat",
+      "title": "🔎 ABA / Lookup",
+      "description": "ABA / Lookup for selected scope.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 62,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /${data_flow_regex:raw}/\n| filter job_name like /${job_name:raw}/\n| filter message like /Unknown ABA|duplicate ABA|ABA unique constraint|Missing lookup|lookup failed|NULL foreign key|Reference data/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "type": "stat",
+      "title": "🧩 Data Constraint",
+      "description": "Data Constraint for selected scope.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 62,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /${data_flow_regex:raw}/\n| filter job_name like /${job_name:raw}/\n| filter message like /ConstraintViolationException|DataIntegrityViolationException|TransientPropertyValueException|NullPointerException|OptimisticLockingFailureException/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "type": "stat",
+      "title": "🧵 String / ORA",
+      "description": "String / ORA for selected scope.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 20,
+        "y": 62,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /${data_flow_regex:raw}/\n| filter job_name like /${job_name:raw}/\n| filter message like /ORA-01489|string concatenation is too long/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "type": "table",
+      "title": "🚨 Recent Actionable Events",
+      "description": "Cross-flow operational exception feed.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 67,
+        "w": 24,
+        "h": 13
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false,
+          "reducer": [
+            "sum"
+          ],
+          "countRows": false,
+          "fields": ""
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, @logStream, job_name, `log.level`, `log.logger`, `error.type`, `error.message`, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter job_name like /${data_flow_regex:raw}/\n| filter job_name like /${job_name:raw}/\n| filter `log.level` in [\"ALERT\",\"ERROR\"] or message like /Job Failure|FAILED|STOPPED|record count mismatch|Skip limit exceeded|ParallelLockoutListener|FileNotFoundException|FlatFileParseException|ConstraintViolationException|DataIntegrityViolationException|Unknown ABA|Exception when creating ack file|Failed to write file to s3|Connection is not available|ORA-01489/i\n| sort @timestamp desc\n| limit 500",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "type": "row",
+      "title": "🖥️ 7. Platform Signals",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 80,
+        "w": 24,
+        "h": 1
+      },
+      "panels": []
+    },
+    {
+      "id": 44,
+      "type": "stat",
+      "title": "⚙️ ECS CPU",
+      "description": "Compass data-processing service CPU.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 81,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Metrics",
+          "region": "$region",
+          "namespace": "AWS/ECS",
+          "metricName": "CPUUtilization",
+          "dimensions": {
+            "ClusterName": "$ecs_cluster",
+            "ServiceName": "$ecs_service"
+          },
+          "statistic": "Average",
+          "period": "300",
+          "matchExact": true,
+          "legendFormat": "CPU %"
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "type": "stat",
+      "title": "🧠 ECS Memory",
+      "description": "Compass data-processing service memory.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 4,
+        "y": 81,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Metrics",
+          "region": "$region",
+          "namespace": "AWS/ECS",
+          "metricName": "MemoryUtilization",
+          "dimensions": {
+            "ClusterName": "$ecs_cluster",
+            "ServiceName": "$ecs_service"
+          },
+          "statistic": "Average",
+          "period": "300",
+          "matchExact": true,
+          "legendFormat": "Memory %"
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "type": "stat",
+      "title": "📥 Incoming Queue",
+      "description": "Visible messages waiting for processing.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 81,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 10
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Metrics",
+          "region": "$region",
+          "namespace": "AWS/SQS",
+          "metricName": "ApproximateNumberOfMessagesVisible",
+          "dimensions": {
+            "QueueName": "$sqs_queue"
+          },
+          "statistic": "Maximum",
+          "period": "300",
+          "matchExact": true,
+          "legendFormat": "Visible"
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "type": "stat",
+      "title": "⏳ Oldest Message",
+      "description": "Age of oldest unprocessed SQS message.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 81,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 900
+              },
+              {
+                "color": "red",
+                "value": 1800
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Metrics",
+          "region": "$region",
+          "namespace": "AWS/SQS",
+          "metricName": "ApproximateAgeOfOldestMessage",
+          "dimensions": {
+            "QueueName": "$sqs_queue"
+          },
+          "statistic": "Maximum",
+          "period": "300",
+          "matchExact": true,
+          "legendFormat": "Age"
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "type": "stat",
+      "title": "🗄️ DLQ",
+      "description": "Dead-letter queue messages.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 81,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Metrics",
+          "region": "$region",
+          "namespace": "AWS/SQS",
+          "metricName": "ApproximateNumberOfMessagesVisible",
+          "dimensions": {
+            "QueueName": "$dlq_queue"
+          },
+          "statistic": "Maximum",
+          "period": "300",
+          "matchExact": true,
+          "legendFormat": "DLQ"
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "type": "stat",
+      "title": "🔌 Timeout / Connection",
+      "description": "Application timeout/connection signals.",
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "$datasource"
+      },
+      "gridPos": {
+        "x": 20,
+        "y": 81,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "vertical",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "showPercentChange": false,
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "$datasource"
+          },
+          "queryMode": "Logs",
+          "region": "$region",
+          "logGroups": [
+            {
+              "name": "$log_group"
+            }
+          ],
+          "expression": "fields @timestamp, job_name, message\n| filter @logStream like /adt-frfs-compass-${env}-${region_short}-tg-dp/\n| filter message like /timeout|timed out|connection refused|connection reset|pool exhausted|database unavailable|Connection is not available/i\n| stats count() as value",
+          "statsGroups": [],
+          "legendFormat": ""
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "type": "row",
+      "title": "🧰 8. Operations Hub",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 86,
+        "w": 24,
+        "h": 1
+      },
+      "panels": []
+    },
+    {
+      "id": 51,
+      "type": "text",
+      "title": "🧰 Operations Hub",
+      "gridPos": {
+        "x": 0,
+        "y": 87,
+        "w": 16,
+        "h": 15
+      },
+      "options": {
+        "mode": "markdown",
+        "content": "\n## 🧭 Compass Job Dashboards & Playbooks\n\n| Data Flow | Dashboard | Playbook |\n|---|---|---|\n| 🗄️ **DataLite Store Jobs** | [📊 Open Dashboard](${datalite_dashboard_url}) | [📘 Open Playbook](${datalite_playbook_url}) |\n| 📥 **EASy Inbound Jobs** | [📊 Open Dashboard](${easy_dashboard_url}) | [📘 Open Playbook](${easy_playbook_url}) |\n| ⚙️ **WPO Inbound Jobs** | [📊 Open Dashboard](${wpo_dashboard_url}) | [📘 Open Playbook](${wpo_playbook_url}) |\n| 📊 **DataPlatform Export Jobs** | [📊 Open Dashboard](${dataplatform_dashboard_url}) | [📘 Open Playbook](${dataplatform_playbook_url}) |\n| ↔️ **FLB Outbound Jobs** | [📊 Open Dashboard](${flb_dashboard_url}) | [📘 Open Playbook](${flb_playbook_url}) |\n| 🔗 **SFDM Integration** | [📊 Open Dashboard](${sfdm_dashboard_url}) | [📘 Open Playbook](${sfdm_playbook_url}) |\n\n### 🧰 Shared Operational Resources\n\n[🖥️ Compass Infrastructure](${compass_infra_url}) •\n[🗺️ Architecture](${architecture_url}) •\n[📚 Runbooks / Playbooks](${runbooks_url}) •\n[🔔 Alert Rules](${alert_rules_url}) •\n[📞 On-Call Information](${oncall_url})\n\n> Update the hidden URL variables after import in **Dashboard settings → Variables**.\n"
+      }
+    },
+    {
+      "id": 52,
+      "type": "text",
+      "title": "🛡️ Operational Guardrails",
+      "gridPos": {
+        "x": 16,
+        "y": 87,
+        "w": 8,
+        "h": 15
+      },
+      "options": {
+        "mode": "markdown",
+        "content": "\n## 🛡️ Enterprise SPOG Guardrails\n\n**🧭 Holistic health remains global.**  \nData Flow / Job filters narrow investigative panels, but do not hide Compass-wide failures.\n\n**🔎 Log scope**  \nApplication queries are constrained to the Compass ECS data-processing stream:\n\n`adt-frfs-compass-${env}-${region_short}-tg-dp`\n\n**🔔 Alert state**  \nCurrent operational alert state should be authoritative from Grafana Alerting; CloudWatch logs provide diagnostic context.\n\n**⏱️ Freshness**  \nThis version shows **Last Success** only. Add true *Expected By / Overdue / Jobs OK x/y* after the six production schedules and grace windows are confirmed.\n\n**⚪ Unknown ≠ Healthy**  \nNo-data, query errors, or missing expected telemetry should surface as UNKNOWN / needs investigation.\n"
+      }
+    },
+    {
+      "id": 53,
+      "type": "text",
+      "title": "🎨 Health State Key",
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 102
+      },
+      "options": {
+        "mode": "markdown",
+        "content": "**🟢 HEALTHY** — expected processing normal  \n**🟡 DEGRADED / ATTENTION** — warning, retry, stale/overdue, elevated backlog  \n**🔴 CRITICAL** — failed/stopped processing, critical alert, DLQ, or blocking condition  \n**⚪ UNKNOWN** — missing telemetry / no-data where data is expected"
+      }
+    }
+  ]
+}
