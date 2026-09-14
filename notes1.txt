@@ -1,5 +1,24 @@
-Latest Update: The corrective action has been defined and is pending the approved execution window. Business will confirm when Funds processing is closed, currently expected around 1900 ET. The tentative change window is 2100 ET, subject to Business confirmation.
+Incident Number
 
-eBS will run the Ansible change to update the affected FLA junction so that it routes back to the intended On-Prem backend. The change will then be followed by a rolling restart of the WebSEAL containers. Each environment has three containers, with only one container restarted at a time while the remaining containers continue handling traffic. Individual container restart time is expected to be approximately 20 seconds, minimizing customer impact.
 
-The overall change and validation window is estimated at approximately one hour.
+Issue Recap
+Customers accessing the EUAC Center through FedLine Advantage (FLA) are receiving 503/5xx errors. EUAC remains accessible through FedLine Web (FLW).
+
+Services / Applications Impacted
+FedLine – EUAC Center access via FLA.
+
+Business / Customer Impact
+Customers attempting to access EUAC Center through FLA are impacted. Customers can continue using FLW for the same functions. Other FLA applications remain available.
+
+Current Findings
+The technical bridge identified a configuration mismatch specific to the FLA MyFedLine/EUAC junction. The affected junction is directing traffic toward the Colo production path rather than the intended On-Prem production backend.
+
+Application JVM and database checks are healthy. The corrective action is understood and would involve updating the affected junction configuration, followed by a rolling restart of the WebSEAL containers.
+
+Current Decision / Status
+Business stakeholders have decided to leave the application in its current state and defer the corrective change until the regular weekend maintenance window.
+
+The team will continue monitoring customer impact. If customer impact increases materially before the weekend, Business and technical resources will regroup and reassess whether the change needs to be performed earlier.
+
+Next Steps
+Technical teams will complete comparison/validation of the affected junction against other known-good junction configurations and confirm that no other planned weekend activity conflicts with the corrective change. The junction routing update and rolling restart are planned for the weekend maintenance window, followed by validation of EUAC access through FLA.
