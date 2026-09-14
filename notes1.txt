@@ -1,1 +1,5 @@
-Latest update: The technical bridge has identified a likely configuration mismatch specific to the FedLine Advantage MyFedLine/EUAC junction. FLA traffic for this junction is currently being directed to the Colo production path, while EUAC production is still expected to be served from the On-Prem environment. This explains why FLA users are receiving 503/5xx errors while FLW remains healthy. The team is reviewing the active/idle configuration and coordinating the correction needed to restore the intended On-Prem routing.
+Latest Update: The corrective action has been defined and is pending the approved execution window. Business will confirm when Funds processing is closed, currently expected around 1900 ET. The tentative change window is 2100 ET, subject to Business confirmation.
+
+eBS will run the Ansible change to update the affected FLA junction so that it routes back to the intended On-Prem backend. The change will then be followed by a rolling restart of the WebSEAL containers. Each environment has three containers, with only one container restarted at a time while the remaining containers continue handling traffic. Individual container restart time is expected to be approximately 20 seconds, minimizing customer impact.
+
+The overall change and validation window is estimated at approximately one hour.
