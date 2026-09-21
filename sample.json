@@ -1,0 +1,58 @@
+############################################################
+# RHEL 8: Configure firewalld ports for TaskTop
+############################################################
+
+USER_DATA_LOG="/tmp/user_data.log"
+
+echo "--------------------------------------------------" >> "$USER_DATA_LOG"
+echo "Configuring firewalld ports 80/443/8443/8444" >> "$USER_DATA_LOG"
+
+# Make sure firewalld is enabled
+sudo systemctl enable firewalld >> "$USER_DATA_LOG" 2>&1
+
+# Configure permanent rules without relying on the running D-Bus service
+for port in 80 443 8443 8444; do
+    echo "Adding ${port}/tcp to firewalld public zone..." >> "$USER_DATA_LOG"
+
+    if ! sudo firewall-offline-cmd \
+        --zone=public \
+        --add-port=${port}/tcp \
+        >> "$USER_DATA_LOG" 2>&1; then
+
+        echo "FAILURE: unable to configure ${port}/tcp" >> "$USER_DATA_LOG"
+        exit 1
+    fi
+done
+
+# Restart firewalld so it loads the permanent configuration
+echo "Restarting firewalld..." >> "$USER_DATA_LOG"
+
+if ! sudo systemctl restart firewalld >> "$USER_DATA_LOG" 2>&1; then
+    echo "FAILURE: firewalld restart failed" >> "$USER_DATA_LOG"
+    exit 1
+fi
+
+# Give firewalld a few seconds to initialize
+sleep 3
+
+# Verify active ports
+OPEN_PORTS=$(sudo firewall-cmd --zone=public --list-ports 2>>"$USER_DATA_LOG")
+
+echo "firewalld open ports after restart: ${OPEN_PORTS}" >> "$USER_DATA_LOG"
+
+FIREWALL_OK=true
+
+for port in 80/tcp 443/tcp 8443/tcp 8444/tcp; do
+    if ! echo "$OPEN_PORTS" | grep -qw "$port"; then
+        echo "FAILURE: required port ${port} is missing" >> "$USER_DATA_LOG"
+        FIREWALL_OK=false
+    fi
+done
+
+if [ "$FIREWALL_OK" != "true" ]; then
+    echo "FAILURE: one or more required firewalld ports are not configured." >> "$USER_DATA_LOG"
+    exit 1
+fi
+
+echo "SUCCESS: ports 80/443/8443/8444 are configured and active." >> "$USER_DATA_LOG"
+echo "--------------------------------------------------" >> "$USER_DATA_LOG"
