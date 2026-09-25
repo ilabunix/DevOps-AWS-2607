@@ -1,14 +1,5 @@
-Current issue:
-During EC2 provisioning, the script reaches the firewall-cmd --permanent --add-port=8443/tcp and 8444/tcp commands, but cloud-init logs show D-Bus/firewalld errors such as org.freedesktop.DBus.Error.NoReply. The script continues anyway, so the instance finishes provisioning without ports 8443 and 8444 open. This causes the ALB target groups to become unhealthy and the application returns 502 until those ports are added manually.
+For the data ingestion alerts, we’ll review the current list, adjust priorities, and add a note with the expected CloudOps action. If no CloudOps action is required, we’ll forward it to the appropriate ADT team.
 
-Required changes:
+We also need to define how Friday night alerts should be handled and document that clearly in the playbooks.
 
-* For RHEL 8, use firewalld consistently for TaskTop ports 8443 and 8444.
-* Explicitly enable and start firewalld before adding rules.
-* Wait/retry until firewall-cmd --state succeeds before applying rules.
-* Add 8443/tcp and 8444/tcp permanently.
-* Reload firewalld.
-* Verify both ports are present after reload.
-* Write useful success/failure output to /tmp/user_data.log.
-* If the firewall rules cannot be applied after retries, fail that section clearly instead of silently continuing.
-* Do not modify unrelated TaskTop installation logic.
+I’ve added a general log_level = ALERT catch-all alert to help identify new/unclassified alert conditions. We can observe those and then add any recurring or meaningful ones into the appropriate job-specific alert category.
