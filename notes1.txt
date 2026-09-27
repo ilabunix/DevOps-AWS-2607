@@ -1,5 +1,562 @@
-For the data ingestion alerts, we’ll review the current list, adjust priorities, and add a note with the expected CloudOps action. If no CloudOps action is required, we’ll forward it to the appropriate ADT team.
+I want you to create a NEW Version 2 of the Compass Jobs SPOG dashboard.
 
-We also need to define how Friday night alerts should be handled and document that clearly in the playbooks.
+IMPORTANT:
+- Do NOT modify, overwrite, or delete the existing Compass Jobs SPOG.
+- Treat the existing SPOG as V1/reference.
+- Create a separate V2 dashboard so I can compare both versions.
+- I am providing a visual mockup that represents the target design and layout for V2.
+- Review the existing Compass job dashboards, alerts, Terraform/Grafana code, variables, and the current SPOG before making changes.
+- Reuse existing working queries, variables, dashboard UIDs, alert labels, datasource configuration, and naming conventions wherever possible.
+- Do not invent telemetry or operational logic just to reproduce something shown in the mockup.
 
-I’ve added a general log_level = ALERT catch-all alert to help identify new/unclassified alert conditions. We can observe those and then add any recurring or meaningful ones into the appropriate job-specific alert category.
+GOAL
+
+Build an enterprise-production-grade:
+
+"Compass Jobs – Single Pane of Glass V2"
+
+This should be the primary CloudOps operational view for Compass job processing.
+
+Compass is the application.
+
+The following are Compass data flows/integrations, NOT separate applications:
+
+1. DataLite Store Jobs
+2. EASy Inbound Jobs
+3. WPO Inbound Jobs
+4. DataPlatform Export Jobs
+5. FLB Outbound Jobs
+6. SFDM Integration
+
+There are already dedicated dashboards and deployed application alerts for these flows.
+
+The SPOG should answer, in this order:
+
+1. Is Compass job processing healthy?
+2. Which data flow is impacted?
+3. Which job is impacted?
+4. What is the current failure/alert?
+5. When did that flow/job last process successfully?
+6. Is this potentially an AWS/platform issue?
+7. Where does CloudOps go next to investigate or respond?
+
+=========================================================
+VISUAL TARGET
+=========================================================
+
+Use the attached mockup as the TARGET visual design.
+
+Do not assume every visual element in the mockup can be reproduced exactly in Grafana.
+
+Instead:
+
+- Reproduce the layout, hierarchy, spacing and operational experience as closely as Grafana natively allows.
+- Prefer native Grafana functionality over custom plugins.
+- Use Grafana built-in/native icons where available.
+- Use Canvas built-in icon elements where Canvas provides a reliable implementation.
+- Use Unicode symbols only where they render reliably and improve readability.
+- Do NOT depend on externally hosted PNG/SVG/icon files.
+- Do NOT add third-party panel/plugin dependencies unless absolutely necessary.
+- Keep the dashboard portable through JSON/Terraform and maintainable by CloudOps.
+- Do not sacrifice maintainability just to make it pixel-perfect.
+
+The target should feel like a modern NOC/CloudOps console rather than a collection of default Grafana panels.
+
+Use the mockup for visual direction, but operational correctness takes priority over appearance.
+
+=========================================================
+1. EXECUTIVE HEALTH
+=========================================================
+
+Create a compact top KPI row similar to the mockup:
+
+[ Compass Processing ]
+[ Healthy Flows ]
+[ Active Alerts ]
+[ Jobs Overdue ]
+[ DLQ Messages ]
+[ Total Jobs (24h) ]
+
+Use meaningful icons.
+
+Examples:
+
+Compass Processing -> warning/health icon
+Healthy Flows -> health/check icon
+Active Alerts -> bell/alert icon
+Jobs Overdue -> clock icon
+DLQ -> database/queue icon
+Total Jobs -> processing/gear icon
+
+Avoid the current V1 behavior where large Stat panels become bright green and display:
+
+"No data"
+
+No-data MUST NOT appear healthy.
+
+Required state model:
+
+HEALTHY = green
+DEGRADED = yellow/amber
+CRITICAL = red
+UNKNOWN / NO DATA = neutral gray
+
+UNKNOWN must never be mapped to HEALTHY.
+
+Where possible, use dark cards with colored status/value/icon rather than coloring the entire panel bright green.
+
+=========================================================
+2. DATA FLOW HEALTH
+=========================================================
+
+Create six polished health cards in one row if screen width permits, otherwise a clean 3x2 layout:
+
+DataLite Store
+EASy Inbound
+WPO Inbound
+DataPlatform Export
+FLB Outbound
+SFDM Integration
+
+Each should visually resemble the supplied mockup.
+
+Target information:
+
+<icon> Data Flow Name
+
+HEALTHY / DEGRADED / CRITICAL / UNKNOWN
+
+Jobs OK
+Failed
+Overdue
+Active Alerts
+Last Success
+
+Dashboard
+Playbook
+
+Use appropriate built-in icons for each flow if possible.
+
+The card state must be based on actual telemetry.
+
+Do NOT simply use:
+0 events = healthy
+unless we have enough evidence to determine that the flow is actually healthy.
+
+No telemetry / query failure / expected telemetry missing should be UNKNOWN.
+
+=========================================================
+3. COMPASS JOBS HEALTH MATRIX
+=========================================================
+
+Create a table containing:
+
+Data Flow
+Health
+Jobs OK
+Failed
+Overdue
+Active Alerts
+Last Job
+Last Status
+Last Success
+
+Use value mappings and cell coloring for:
+
+HEALTHY
+DEGRADED
+CRITICAL
+UNKNOWN
+
+Keep this compact and immediately readable.
+
+=========================================================
+4. CURRENT COMPASS ALERTS
+=========================================================
+
+Use actual Grafana Alerting state.
+
+Show current:
+
+Firing
+Pending
+No Data
+Error
+
+Where available include:
+
+Time
+Data Flow
+Alert Name
+Severity
+Job Name
+
+Also provide compact alert summary counters:
+
+Critical
+High
+Warning
+Pending
+Unknown
+
+Prefer existing deployed Compass application alerts rather than independently recreating alert logic in this panel.
+
+Review the actual labels used by the deployed alerts and use those labels rather than assuming them.
+
+=========================================================
+5. PROCESSING FRESHNESS
+=========================================================
+
+Target layout:
+
+Data Flow
+Last Success
+Expected By
+Age
+Freshness
+
+Possible states:
+
+CURRENT
+OVERDUE
+STALE
+UNKNOWN
+
+IMPORTANT:
+
+Do NOT invent expected schedules.
+
+If the repository/playbooks do not provide authoritative schedules and grace periods, initially implement:
+
+Data Flow
+Last Success
+Age
+
+and mark schedule-based fields as TODO / not configured.
+
+Expected By / Overdue should only become operational once authoritative schedules are available.
+
+=========================================================
+6. JOB PROCESSING ACTIVITY
+=========================================================
+
+Create compact counters for:
+
+Started
+Completed
+Failed
+Stopped
+Retried
+Overdue
+
+Then:
+
+Jobs Processed Over Time
+
+and
+
+Failures by Data Flow
+
+Use native Grafana time-series/bar-chart visualization where appropriate.
+
+=========================================================
+7. EXCEPTION SUMMARY
+=========================================================
+
+Create compact exception counters based on the actual Compass alert/query patterns:
+
+Job Failures
+Step Errors
+Record Mismatches
+Skip / Volume
+File Errors
+Lockouts
+
+DB Errors
+S3 Failures
+ACK Failures
+ABA / Lookup
+Data Constraint
+ORA / String
+
+These should use the existing job alert/query logic where available.
+
+Do not create new broad patterns that could produce false positives without reviewing them first.
+
+=========================================================
+8. RECENT ACTIONABLE EVENTS
+=========================================================
+
+Create a table showing recent operationally useful events:
+
+Time
+Data Flow
+Job Name
+Event Type
+Severity
+Message
+
+This should NOT become a raw-log dump.
+
+Only show events useful to CloudOps investigation.
+
+Avoid exposing unnecessary sensitive/personal information in message fields.
+
+=========================================================
+9. PLATFORM SIGNALS
+=========================================================
+
+Keep this intentionally compact.
+
+Show only enough infrastructure telemetry to answer:
+
+"Could the job problem be caused by the underlying AWS platform?"
+
+Target signals:
+
+ECS Tasks / Service health
+ECS CPU
+ECS Memory
+Incoming Queue
+Oldest Message
+DLQ Messages
+
+Do NOT duplicate the entire AWS infrastructure dashboard here.
+
+=========================================================
+10. COMPASS AWS PLATFORM / LIVE ARCHITECTURE
+=========================================================
+
+We already have a separate Compass AWS SPOG / Live Architecture dashboard.
+
+Do NOT duplicate that entire dashboard.
+
+The mockup shows a small architecture representation for context.
+
+Evaluate the best native Grafana implementation.
+
+Preferred behavior:
+
+Show a compact architecture/context panel if it can be implemented cleanly with Canvas/native Grafana.
+
+Represent the high-level path approximately as:
+
+Users / WebSEAL
+      ->
+Route53 / Private Hosted Zone
+      ->
+ALB
+      ->
+Compass ECS
+      ->
+S3 / Aurora
+
+with supporting services such as:
+
+SQS
+EventBridge
+Lambda
+Certificate Manager
+
+This is for orientation, not detailed infrastructure troubleshooting.
+
+The panel should have a link such as:
+
+"Open Compass AWS SPOG"
+
+and/or
+
+"Open Live Architecture"
+
+for full investigation.
+
+If reproducing the diagram introduces unnecessary maintenance, use a polished navigation/context card instead.
+
+=========================================================
+11. OPERATIONS HUB
+=========================================================
+
+Build a polished Operations Hub similar to the mockup.
+
+JOB OPERATIONS
+
+DataLite
+[ Dashboard ] [ Playbook ]
+
+EASy
+[ Dashboard ] [ Playbook ]
+
+WPO
+[ Dashboard ] [ Playbook ]
+
+DataPlatform
+[ Dashboard ] [ Playbook ]
+
+FLB
+[ Dashboard ] [ Playbook ]
+
+SFDM
+[ Dashboard ] [ Playbook ]
+
+
+PLATFORM & SUPPORT RESOURCES
+
+[ Compass AWS SPOG ]
+[ Architecture / Live Diagram ]
+[ Synthetic Monitoring ]
+[ Runbooks / Playbooks ]
+[ Alert Rules ]
+[ On-Call Information ]
+
+Use existing dashboard UIDs/URLs where available.
+
+Do not hard-code environment-specific Grafana hostnames unnecessarily.
+Prefer Grafana internal dashboard links/UIDs when possible.
+
+=========================================================
+VARIABLES
+=========================================================
+
+Review the current dashboard and retain/use appropriate variables.
+
+Expected variables include:
+
+CloudWatch datasource
+Environment
+Region
+Data Flow
+Job Name
+Compass ECS Log Group
+ECS Cluster
+ECS Service
+Incoming SQS Queue
+Dead Letter Queue
+
+Do NOT create unnecessary variables.
+
+Make dependent variables refresh correctly when Environment/Region changes.
+
+=========================================================
+CLOUDWATCH LOGS
+=========================================================
+
+IMPORTANT:
+
+The Compass application logs are in the Compass ECS log group.
+
+The processing queries need to target the Compass data-processing log stream.
+
+The known pattern is approximately:
+
+/adt-frfs-compass-${env}-e-tg-dp
+or the corresponding region/environment naming convention.
+
+Do NOT assume the current V1 log queries are correct just because they exist.
+
+The current imported SPOG has many "No data" panels.
+
+Before building all V2 queries:
+
+1. Identify a WORKING query from one of the existing dedicated dashboards:
+   - DataLite
+   - EASy
+   - WPO
+   - DataPlatform
+   - FLB
+   - SFDM
+
+2. Verify:
+   - datasource
+   - log group
+   - log stream filtering
+   - actual field names
+   - job-name extraction
+   - message structure
+
+3. Establish one known-good CloudWatch Logs Insights query pattern.
+
+4. Test it.
+
+5. Only then reuse that pattern throughout V2.
+
+Do not propagate the V1 query assumptions into V2 if they are causing No data.
+
+=========================================================
+NO DATA / ERROR HANDLING
+=========================================================
+
+This is mandatory.
+
+The current V1 has several bright-green panels saying "No data".
+
+Fix this in V2.
+
+State handling must distinguish:
+
+0 = valid query result with zero matching problems
+No Data = UNKNOWN
+Query Error = UNKNOWN / ERROR
+Positive failure count = DEGRADED/CRITICAL according to severity
+
+A missing result must never be interpreted as zero unless the datasource/query semantics guarantee that.
+
+=========================================================
+IMPLEMENTATION APPROACH
+=========================================================
+
+Before changing code:
+
+1. Inspect the current Compass Jobs SPOG.
+2. Inspect all six dedicated dashboards.
+3. Inspect deployed Compass alert rules.
+4. Inspect existing Terraform/Grafana modules.
+5. Identify reusable queries and variables.
+6. Identify existing dashboard UIDs.
+7. Identify existing playbook links if present.
+8. Identify the Compass AWS SPOG / Live Architecture dashboard UID/link.
+9. Identify the Grafana version/provider capabilities available to us.
+10. Determine whether Canvas can provide the desired icon/card treatment without introducing fragile configuration.
+
+Then give me a short implementation plan.
+
+After the review, proceed autonomously with the V2 implementation unless you encounter a decision that could cause destructive changes or requires information that cannot be derived from the repository/Grafana configuration.
+
+=========================================================
+DELIVERABLE
+=========================================================
+
+Create a NEW Compass Jobs SPOG V2.
+
+Do not overwrite V1.
+
+The finished V2 should:
+
+- visually resemble the attached mockup
+- use native/built-in Grafana icons where practical
+- have proper HEALTHY / DEGRADED / CRITICAL / UNKNOWN handling
+- provide holistic Compass job health
+- cover all six Compass data flows
+- use existing deployed alerts
+- provide useful job processing/freshness information
+- show only relevant platform signals
+- link to the existing Compass AWS SPOG / Live Architecture
+- provide direct Dashboard + Playbook navigation
+- avoid duplicated infrastructure monitoring
+- avoid invented telemetry
+- avoid false HEALTHY states
+- be maintainable through our existing Grafana/Terraform approach
+- preserve all existing dashboards
+
+Once complete, report:
+
+1. Files created/modified
+2. New dashboard UID/title
+3. Panels created
+4. Variables used
+5. Queries reused and their source dashboards
+6. Alert labels used
+7. How health is calculated
+8. How No Data / Unknown is handled
+9. Links configured
+10. Any placeholders/TODOs still requiring information
+11. Any differences from the visual mockup caused by Grafana limitations
