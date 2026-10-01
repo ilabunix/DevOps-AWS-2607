@@ -1,0 +1,3 @@
+The dashboard and alerting effort has been largely driven by TechOps. We used the documentation/playbooks shared during the training sessions as a starting point, then validated the documented job flows and exceptions against the actual ECS logs.
+
+TechOps identified the log patterns, built and refined the dashboard queries, and created job-specific alerts so issues can be tied to the correct data flow and playbook instead of a single generic alert.
